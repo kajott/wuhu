@@ -56,7 +56,7 @@ add_hook("index_menu_parse","entryfeedback_menu");
 
 function entryfeedback_userentries( $data )
 {
-  printf("<td>%s</td>",_html($data["entry"]->organizerfeedback));
+  printf("<div class=\"entryfeedback\">%s</div>",_html($data["entry"]->organizerfeedback));
 }
 
 add_hook("editentries_endrow","entryfeedback_userentries");
