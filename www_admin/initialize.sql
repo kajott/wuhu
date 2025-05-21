@@ -21,6 +21,7 @@ CREATE TABLE `compos` (
   `name` text NOT NULL,
   `start` datetime NOT NULL,
   `showauthor` tinyint(4) default '1',
+  `screenshot` tinyint(4) default '1',
   `votingopen` tinyint(4) default '0',
   `uploadopen` tinyint(4) default '1',
   `updateopen` tinyint(4) default '1',

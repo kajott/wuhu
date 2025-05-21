@@ -24,6 +24,7 @@ include_once("header.inc.php");
 
 $checkboxen = array(
   "showauthor"=>"Show author on the slide",
+  "screenshot"=>"Enable screenshot upload and display",
   "votingopen"=>"Compo open for voting",
   "uploadopen"=>"Compo open for uploading entries",
   "updateopen"=>"Compo open for updating entries",
