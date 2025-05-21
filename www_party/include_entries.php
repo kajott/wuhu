@@ -107,11 +107,13 @@ if (@$_GET["id"])
   <label id="orgacomment">Comment for the organizers: (this will NOT be shown anywhere)</label>
   <textarea name="orgacomment"><?=_html($entry->orgacomment)?></textarea>
 </div>
+<?php if ($compo->screenshot) { ?>
 <div class='formrow'>
   <label>Screenshot: (JPG, GIF or PNG!)</label>
-  <img id='screenshot' src='screenshot.php?id=<?=(int)$_GET["id"]?>&amp;show=thumb' alt='thumb'/>
+  <img id='screenshot' src='screenshot.php?id=<?=(int)$_GET["id"]?>&amp;show=thumb' alt='thumb'/><br/>
   <input name="screenshot" type="file" accept="image/*" />
 </div>
+<?php } ?>
 <div class='formrow'>
   <label>Uploaded files</label>
 <table id='uploadedfiles'>
@@ -163,7 +165,10 @@ else
   {
     $compo = get_compo( $entry->compoid );
     echo "<div class='entry'>\n";
-    printf("<div class='screenshot'><a href='screenshot.php?id=%d' target='_blank'><img src='screenshot.php?id=%d&amp;show=thumb'/></a></div>\n",$entry->id,$entry->id);
+    if ($compo->screenshot)
+    {
+      printf("<div class='screenshot'><a href='screenshot.php?id=%d' target='_blank'><img src='screenshot.php?id=%d&amp;show=thumb'/></a></div>\n",$entry->id,$entry->id);
+    }
     printf("<div class='compo'>%s</div>\n",_html($compo->name));
     printf("<div class='title'><b>%s</b> - %s</div>\n",_html($entry->title),_html($entry->author));
 
