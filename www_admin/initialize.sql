@@ -5,6 +5,7 @@ CREATE TABLE `compoentries` (
   `userid` int(11) NOT NULL,
   `title` text NOT NULL,
   `author` text NOT NULL,
+  `platform` text NOT NULL,
   `comment` text NOT NULL,
   `orgacomment` text NOT NULL,
   `playingorder` int(11) NOT NULL,
@@ -25,6 +26,8 @@ CREATE TABLE `compos` (
   `votingopen` tinyint(4) default '0',
   `uploadopen` tinyint(4) default '1',
   `updateopen` tinyint(4) default '1',
+  `hasplatform` tinyint(4) default '0',
+  `platforms` text,
   `dirname` text NOT NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

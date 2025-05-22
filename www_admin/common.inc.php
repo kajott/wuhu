@@ -247,7 +247,7 @@ function handleUploadedRelease( $dataArray, &$output )
   global $sqldata;
   $sqldata = array();
 
-  $meta = array("title","author","comment","orgacomment");
+  $meta = array("title","author","platform","comment","orgacomment");
   foreach($meta as $v)
     if (isset($dataArray[$v]))
       $sqldata[$v] = $dataArray[$v];

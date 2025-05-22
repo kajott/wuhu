@@ -66,6 +66,11 @@ foreach($s as $t)
   <label for='author'>Author:</label>
   <input id='author' name="author" type="text" value="<?=_html(@$_POST["author"])?>"/>
 </div>
+<div class='formrow' id='row_platform'>
+  <label for='platform'>Platform:</label>
+  <input id='platform' name="platform" type="text" value="<?=_html(@$_POST["platform"])?>" list="platforms"/>
+  <datalist id="platforms"></datalist>
+</div>
 <div class='formrow' id='row_comment'>
   <label for="comment">Comment: <small>(this will be shown on the compo slide)</small></label>
   <textarea name="comment"><?=_html(@$_POST["comment"])?></textarea>
@@ -99,6 +104,13 @@ document.getElementById("compo").addEventListener("change",function(ev){
     if(!s)return;
     s=JSON.parse(s);
     document.getElementById("row_screenshot").style.visibility=((s.screenshot===undefined)||parseInt(s.screenshot))?"visible":"hidden";
+    document.getElementById("row_platform").style.visibility=((s.hasplatform!==undefined)&&parseInt(s.hasplatform))?"visible":"hidden";
+    var l=document.getElementById("platforms");
+    l.replaceChildren();
+    s.platforms.split("\n").forEach(function(p){
+      p=p.trim();if(!p)return;
+      l.appendChild(new Option(p,p));
+    });
   });
   req.open("GET", "compoprops.php?id="+ev.target.value);
   req.send();

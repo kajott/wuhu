@@ -292,7 +292,7 @@ var WuhuSlideSystem = Class.create({
                 var sec = this.insertSlide({"class":"compoDisplaySlide entry"});
                 sec.insert( new Element("div",{"class":"eventName"}).update(compoName) );
                 var cont = sec.down("div.container");
-                var fields = ["number","title","author","comment"];
+                var fields = ["number","title","author","platform","comment"];
                 fields.each(function(field){
                   if ( entry[field] )
                   {
