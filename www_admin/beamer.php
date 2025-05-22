@@ -83,6 +83,10 @@ if (@$_POST["mode"])
         {
           $a["author"] = $t->author;
         }
+        if ($compo->hasplatform)
+        {
+          $a["platform"] = $t->platform;
+        }
         $out["result"]["entries"][] = $a;
       }
     } break;

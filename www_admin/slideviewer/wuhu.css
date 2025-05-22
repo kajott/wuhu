@@ -98,6 +98,15 @@ body > .overview {
 {
     text-align: left;
 }
+.reveal .slides > section.compoDisplaySlide.entry .platform,
+.dummy
+{
+    text-align: left;
+    font-size: 32px;
+    font-weight: bold;
+    line-height: normal;
+    margin-top: 16px;
+}
 .reveal .slides > section.compoDisplaySlide.entry .comment, 
 .reveal .slides > section.prizegivingSlide.entry .points,
 .dummy
@@ -105,6 +114,7 @@ body > .overview {
     text-align: left;
     font-size: 32px;
     line-height: normal;
+    margin-top: 16px;
 }
 
 .reveal #pip-countdown {

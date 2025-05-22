@@ -11,7 +11,7 @@ function perform(&$msg)
     return 0;
   }
   $data = array();
-  $meta = array("title","author","comment","orgacomment");
+  $meta = array("title","author","platform","comment","orgacomment");
   foreach($meta as $m) $data[$m] = $_POST[$m];
   $data["id"] = $_POST["entryid"];
   $data["compoID"] = @$_POST["compo"];
@@ -99,6 +99,21 @@ if (@$_GET["id"])
   <label for="author">Author:</label>
   <input id="author" name="author" type="text" value="<?=_html($entry->author)?>"/>
 </div>
+<?php if ($compo->hasplatform) { ?>
+<div class='formrow'>
+  <label for="platform">Platform:</label>
+  <input id="platform" name="platform" type="text" value="<?=_html($entry->platform)?>" list="platforms"/>
+  <datalist id="platforms">
+  <?php
+    foreach(explode("\n", $compo->platforms) as $p) {
+      if (trim($p) != "") {
+        echo "    <option value=\"" . _html(trim($p)) . "\"/>\n";
+      }
+    }
+  ?>
+  </datalist>
+</div>
+<?php } ?>
 <div class='formrow'>
   <label for="comment">Comment: (this will be shown on the compo slide)</label>
   <textarea id="comment" name="comment"><?=_html($entry->comment)?></textarea>
