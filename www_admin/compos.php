@@ -28,6 +28,7 @@ $checkboxen = array(
   "votingopen"=>"Compo open for voting",
   "uploadopen"=>"Compo open for uploading entries",
   "updateopen"=>"Compo open for updating entries",
+  "hasplatform"=>"Enable platform selection combo box",
 );
 
 if (@$_POST["submit"] == "Export!")
@@ -56,6 +57,7 @@ else
         "name" => $_POST["name"],
         "start" => $_POST["compostart_date"]." ".$_POST["compostart_time"],
         "dirname" => $_POST["dirname"],
+        "platforms" => trim($_POST["platforms"]),
       );
       foreach($checkboxen as $k=>$v)
         $data[$k] = (int)(@$_POST[$k] == "on");
@@ -126,6 +128,14 @@ foreach($checkboxen as $k=>$v)
 </tr>
 <?php
 }
+?>
+<tr>
+  <td>Platform combobox presets<br/><small>(ignored if the combobox is not enabled &ndash; see the checkbox above)</small></td>
+  <td><textarea id="platforms" name="platforms"><?=_html($compo->platforms)?>
+
+</textarea></td>
+</tr>
+<?php
 run_hook("admin_compos_editform",array("compo"=>$compo));
 ?>
 <tr>

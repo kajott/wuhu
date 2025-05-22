@@ -125,8 +125,8 @@ if ($id) {
 <tr>
   <td>Compo:</td>
   <td><?php
-  $s = get_compo($entry->compoid);
-  printf("<a href='compos_entry_list.php?id=%d'>%s</a>",$s->id,$s->name);
+  $compo = get_compo($entry->compoid);
+  printf("<a href='compos_entry_list.php?id=%d'>%s</a>",$compo->id,$compo->name);
   $dirname = get_compoentry_dir_path($entry);
   ?></td>
 </tr>
@@ -146,6 +146,7 @@ if ($_POST["compo"])
   $compoID = (int)$_POST["compo"];
 foreach($s as $t) {
   printf("  <option value='%d'%s>%s</option>\n",$t->id,$compoID==$t->id?" selected='selected'":"",$t->name);
+  if($compoID==$t->id)$compo=$t;
 }
 ?>
   </select></td>
@@ -160,6 +161,19 @@ foreach($s as $t) {
 <tr>
   <td>Author:</td>
   <td><input name="author" type="text" value="<?=_html($entry->author)?>" class="inputfield"/></td>
+</tr>
+<tr>
+  <td>Platform:</td>
+  <td><input name="platform" type="text" value="<?=_html($entry->platform)?>" class="inputfield" list="platforms"/></td>
+  <datalist id="platforms">
+  <?php
+    foreach(explode("\n", $compo->platforms) as $p) {
+      if (trim($p) != "") {
+        echo "    <option value=\"" . _html($p) . "\"/>\n";
+      }
+    }
+  ?>
+  </datalist>
 </tr>
 <tr>
   <td>Comment: (this will be shown on the compo slide)</td>
