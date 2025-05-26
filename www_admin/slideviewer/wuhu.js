@@ -175,6 +175,7 @@ var WuhuSlideSystem = Class.create({
           this.slides.push( o );
         }).bind(this));
         Reveal.toggleAutoSlide(true);
+        this.callbackDelay = null;
         this.reloadSlideRotation();
         this.regenerateTransitions();
       }).bind(this)
@@ -265,6 +266,7 @@ var WuhuSlideSystem = Class.create({
           case "compodisplay":
             {
               Reveal.getConfig().loop = false;
+              this.callbackDelay = result.callbacks;
 
               var compoName = "";
               var compoNameFull = "";
@@ -280,7 +282,7 @@ var WuhuSlideSystem = Class.create({
               }
 
               // slide 1: introduction
-              var sec = this.insertSlide({"class":"compoDisplaySlide intro"});
+              var sec = this.insertSlide({"class":"compoDisplaySlide intro", "data-cbcompo":result.compoid});
               var cont = sec.down("div.container");
               cont.insert( new Element("div",{"class":"eventName"}).update(compoNameFull) );
               cont.insert( new Element("div",{"class":"willStart"}).update("will start") );
@@ -289,7 +291,7 @@ var WuhuSlideSystem = Class.create({
               // slide 2..n: entries
 
               $A(result.entries).each(function(entry){
-                var sec = this.insertSlide({"class":"compoDisplaySlide entry"});
+                var sec = this.insertSlide({"class":"compoDisplaySlide entry", "data-cbcompo":result.compoid, "data-cbnumber":entry["number"]});
                 sec.insert( new Element("div",{"class":"eventName"}).update(compoName) );
                 var cont = sec.down("div.container");
                 var fields = ["number","title","author","platform","comment"];
@@ -306,7 +308,7 @@ var WuhuSlideSystem = Class.create({
               },this);
 
               // slide n+1: end of compo
-              var sec = this.insertSlide({"class":"compoDisplaySlide outro"});
+              var sec = this.insertSlide({"class":"compoDisplaySlide outro", "data-cbcompo":result.compoid});
               var cont = sec.down("div.container");
               cont.insert( new Element("div",{"class":"eventName"}).update(compoNameFull) );
               cont.insert( new Element("div",{"class":"is"}).update("is") );
@@ -413,6 +415,9 @@ var WuhuSlideSystem = Class.create({
     this.countdownTimeStamp = null;
 
     this.slideContainer = $$(".reveal .slides").first();
+
+    this.callbackTimer = null;
+    this.callbackDelay = 0;
 
     this.revealOptions =
     {
@@ -521,6 +526,20 @@ var WuhuSlideSystem = Class.create({
           var video = ev.currentSlide.down("video");
           if (video) video.play();
         });
+        window.clearTimeout(this.callbackTimer);
+        if (this.callbackDelay) {
+          var classes = Array.from(ev.currentSlide.classList);
+          if (classes[classes.length - 1] == "present") classes.pop();
+          var callbackURL = "../callback.php?slidetype=" + classes.join("-");
+          for (var item in ev.currentSlide.dataset) {
+            if (item.substring(0, 2) == "cb") {
+              callbackURL += "&" + item.substring(2) + "=" + ev.currentSlide.dataset[item];
+            }
+          }
+          this.callbackTimer = window.setTimeout(function(url){
+            new Ajax.Request(callbackURL, {"method": "GET"});
+          }, this.callbackDelay * 1000, callbackURL);
+        }
         this.reLayout();
       }).bind(this));
       Event.observe(window, 'resize', (function() { this.reLayout(); }).bind(this));

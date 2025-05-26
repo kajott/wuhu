@@ -7,12 +7,16 @@ if (isset($_POST["livevoteCompo"]))
   update_setting("livevote_compo", (int)$_POST["livevoteCompo"]);
   SQLLib::Query("update compoentries set livevote_enabled = 0 where compoid=".(int)$_POST["livevoteCompo"]);
 }
+if (isset($_POST["livevoteAuto"]))
+{
+  update_setting("livevote_auto", (int)$_POST["livevoteAuto"]);
+}
 if (isset($_POST["livevoteEntries"]))
 {
   //update_setting("livevote_compo", (int)$_POST["livevoteCompo"]);
   foreach($_POST["livevoteEntries"] as $k=>$v)
   {
-    SQLLib::updateRow("compoentries",array("livevote_enabled"=>($v=="on")),"id=".(int)$k);
+    SQLLib::updateRow("compoentries",array("livevote_enabled"=>(($v=="on")?1:0)),"id=".(int)$k);
   }
 }
 
@@ -25,6 +29,17 @@ $opencompos = SQLLib::selectRows("select * from compos where uploadopen = 0 and 
 
 $compos = array(0=>"- none -");
 foreach($opencompos as $v) $compos[$v->id] = $v->name;
+
+$mode = @intval(get_setting("livevote_auto"));
+echo "<form method='post'>";
+echo "Live voting management mode:";
+echo "<br/><input type='radio' name='livevoteAuto' value='0'" . (($mode == 0) ? " checked='checked'" : "") . "> ";
+echo "<strong>manual:</strong> only this admin page sets up live voting";
+echo "<br/><input type='radio' name='livevoteAuto' value='1'" . (($mode == 1) ? " checked='checked'" : "") . "> ";
+echo "<strong>automatic:</strong> slideviewer callbacks from compo entry slides trigger live voting";
+echo "<br/><input type='radio' name='livevoteAuto' value='2'" . (($mode == 2) ? " checked='checked'" : "") . "> ";
+echo "<strong>fully automatic:</strong> as above, but callbacks from 'end of compo' slides trigger normal voting too";
+echo "<br/><input type='submit' value='Apply'></form>\n";
 
 echo "<form method='post'>";
 echo "<label for='livevoteCompo'>Select compo for livevoting: (only compos with closed uploads are visible:)</label>";
