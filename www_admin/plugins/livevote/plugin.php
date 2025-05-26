@@ -200,6 +200,30 @@ function livevote_addmenu( $data )
 }
 add_hook("admin_menu","livevote_addmenu");
 
+function livevote_callback()
+{
+  if (!isset($_GET["compo"])) return;
+  $compoID = @intval($_GET["compo"]);
+  if (!$compoID) return;
+
+  $mode = @intval(get_setting("livevote_auto"));
+  if (!$mode) return;
+
+  if (($mode >= 1) && isset($_GET["number"]))
+  {
+    $number = @intval($_GET["number"]);
+    if (!$number) return;
+    update_setting("livevote_compo", $compoID);
+    SQLLib::Query("update compoentries set livevote_enabled = 1 where compoid=" . $compoID . " and playingorder=" . $number);
+  }
+
+  if (($mode >= 2) && isset($_GET["slidetype"]) && (stripos($_GET["slidetype"], "outro") !== false))
+  {
+    SQLLib::Query("update compos set votingopen=1 where id=" . $compoID);
+  }
+}
+add_hook("admin_beamer_callback", "livevote_callback");
+
 function livevote_activation()
 {
   $r = SQLLib::selectRow("show columns from compoentries where field = 'livevote_enabled'");
@@ -208,6 +232,5 @@ function livevote_activation()
     SQLLib::Query("ALTER TABLE compoentries ADD `livevote_enabled` tinyint NOT NULL DEFAULT '0';");
   }
 }
-
 add_activation_hook( __FILE__, "livevote_activation" );
 ?>

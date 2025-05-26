@@ -61,7 +61,9 @@ if (@$_POST["mode"])
     case "compodisplay":
     {
       $compo = get_compo( $_POST["compo"] );
+      $out["result"]["compoid"] = $compo->id;
       $out["result"]["componame"] = $compo->name;
+      $out["result"]["callbacks"] = $_POST["callbacks"] ? @intval($_POST["cbdelay"]) : 0;
 
       $query = new SQLSelect();
       $query->AddTable("compoentries");
@@ -160,6 +162,9 @@ foreach($s as $t)
   printf("  <option value='%d'>%s</option>\n",$t->id,$t->name);
 ?>
 </select><br/>
+  <input style="display:inline" type="checkbox" name="callbacks"/> trigger callbacks after
+  <input style="display:inline" type="text" size="2" name="cbdelay" value="20"/> seconds
+<br/>
   <input type="hidden" name="mode" value="compodisplay"/>
   <input type="submit" value="Switch to Compo Display mode."/>
 </form>
