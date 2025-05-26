@@ -396,8 +396,8 @@ var WuhuSlideSystem = Class.create({
       width: screen.width,
       height: screen.height,
       countdownOverlay: true,
-      transitions: "cube/page/concave/zoom/linear/fade",
-      defaultTransition: "cube",
+      transitions: "convex/fade/concave/zoom/slide",
+      defaultTransition: "convex",
       prizegivingStyle: 'bars',
     };
     Object.extend(this.options, opt || {} );
