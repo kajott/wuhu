@@ -8,6 +8,15 @@ body > .overview {
   background: #888;
 } 
 
+body > #slideviewerBackground {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -999;
+}
+
 .reveal .slides > section div.container {
   width: 100%;
   position: absolute;
