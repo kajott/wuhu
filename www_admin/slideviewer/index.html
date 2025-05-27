@@ -35,6 +35,8 @@
 
   <body>
 
+    <div id="slideviewerBackground"></div>
+
     <div class="reveal">
 
       <!-- Any section element inside of this container is displayed as a slide -->
@@ -42,6 +44,12 @@
       </div>
 
     </div>
+
+    <!-- if custom.js exists, load and run it here; this script may define
+         the callback function document.slideChangeNotify that's called every
+         time the slide has changed; it receives an object with information
+         about the slide, e.g. { "slidetype": "compoDisplaySlide-entry" } -->
+    <script type="text/javascript" src="custom.js"></script>
 
   </body>
 </html>

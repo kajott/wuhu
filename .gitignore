@@ -9,6 +9,7 @@ www_admin/noscreenshot-*.png
 www_admin/slides/*
 !www_admin/slides/index.php
 www_admin/slideviewer/custom.css
+www_admin/slideviewer/custom.js
 www_party/database.inc.php
 www_party/prototype.js
 www_party/template.html

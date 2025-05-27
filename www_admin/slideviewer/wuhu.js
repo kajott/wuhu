@@ -178,8 +178,34 @@ var WuhuSlideSystem = Class.create({
         this.callbackDelay = null;
         this.reloadSlideRotation();
         this.regenerateTransitions();
+        this.notifySlideChange();
       }).bind(this)
     });
+  },
+
+  notifySlideChange:function()
+  {
+    window.clearTimeout(this.callbackTimer);
+    var currentSlide = Reveal.getCurrentSlide();
+    if (!currentSlide) return;
+    var classes = Array.from(currentSlide.classList);
+    if (classes[classes.length - 1] == "present") classes.pop();
+    var slideInfo = { 'slidetype': classes.join("-") };
+    for (var item in currentSlide.dataset) {
+      if (item.substring(0, 4) == "info") {
+        slideInfo[item.substring(4).toLowerCase()] = currentSlide.dataset[item];
+      }
+    }
+    // run the document.slideChangeNotify callback that custom.js may have installed
+    if (document.slideChangeNotify) {
+      document.slideChangeNotify(slideInfo);
+    }
+
+    if (this.callbackDelay) {
+      this.callbackTimer = window.setTimeout(function(url){
+        new Ajax.Request(url, {"method": "GET"});
+      }, this.callbackDelay * 1000, "../callback.php?" + (new URLSearchParams(slideInfo).toString()));
+    }
   },
 
   updateCountdownTimer:function()
@@ -282,7 +308,7 @@ var WuhuSlideSystem = Class.create({
               }
 
               // slide 1: introduction
-              var sec = this.insertSlide({"class":"compoDisplaySlide intro", "data-cbcompo":result.compoid});
+              var sec = this.insertSlide({"class":"compoDisplaySlide intro", "data-info-compo":result.compoid});
               var cont = sec.down("div.container");
               cont.insert( new Element("div",{"class":"eventName"}).update(compoNameFull) );
               cont.insert( new Element("div",{"class":"willStart"}).update("will start") );
@@ -291,7 +317,7 @@ var WuhuSlideSystem = Class.create({
               // slide 2..n: entries
 
               $A(result.entries).each(function(entry){
-                var sec = this.insertSlide({"class":"compoDisplaySlide entry", "data-cbcompo":result.compoid, "data-cbnumber":entry["number"]});
+                var sec = this.insertSlide({"class":"compoDisplaySlide entry", "data-info-compo":result.compoid, "data-info-number":entry["number"]});
                 sec.insert( new Element("div",{"class":"eventName"}).update(compoName) );
                 var cont = sec.down("div.container");
                 var fields = ["number","title","author","platform","comment"];
@@ -380,6 +406,7 @@ var WuhuSlideSystem = Class.create({
           item.setAttribute("data-transition",this.options.defaultTransition);
         }).bind(this));
         this.reLayout();
+        this.notifySlideChange();
       }).bind(this)
     });
   },
@@ -526,21 +553,8 @@ var WuhuSlideSystem = Class.create({
           var video = ev.currentSlide.down("video");
           if (video) video.play();
         });
-        window.clearTimeout(this.callbackTimer);
-        if (this.callbackDelay) {
-          var classes = Array.from(ev.currentSlide.classList);
-          if (classes[classes.length - 1] == "present") classes.pop();
-          var callbackURL = "../callback.php?slidetype=" + classes.join("-");
-          for (var item in ev.currentSlide.dataset) {
-            if (item.substring(0, 2) == "cb") {
-              callbackURL += "&" + item.substring(2) + "=" + ev.currentSlide.dataset[item];
-            }
-          }
-          this.callbackTimer = window.setTimeout(function(url){
-            new Ajax.Request(callbackURL, {"method": "GET"});
-          }, this.callbackDelay * 1000, callbackURL);
-        }
         this.reLayout();
+        this.notifySlideChange();
       }).bind(this));
       Event.observe(window, 'resize', (function() { this.reLayout(); }).bind(this));
     }).bind(this));
