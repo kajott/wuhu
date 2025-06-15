@@ -300,6 +300,7 @@ dd {
 textarea {
   width: 500px;
   height: 250px;
+  padding: 2px;
 }
 
 .filelist li {

@@ -19,7 +19,7 @@ if (isset($_GET["file"]))
   }
   echo "<p>Editing: <strong class=\"filename\">" . _html($filename) . "</strong></p>\n";
   echo "<form method=\"POST\" action=\"pluginoptions.php?plugin=fileedit&file=$filename\">\n";
-  echo "<textarea id=\"editor\" cols=\"80\" rows=\"30\" name=\"text\" style=\"width:100%; height:70vh; padding:2px;\">";
+  echo "<textarea id=\"editor\" cols=\"80\" rows=\"30\" name=\"text\" style=\"width:100%; height:70vh;\">";
   echo _html($contents) . "</textarea>\n";
   echo "<input id=\"save\" type=\"submit\" value=\"Save\"/>\n";
   echo "</form>\n";
