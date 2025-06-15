@@ -33,6 +33,16 @@ else if (@$_POST["editSlideContents"] && @$_POST["editSlideFilename"])
     redirect();
   $error = "Failed to write slides/".$_POST["editSlideFilename"];
 }
+else if (@$_POST["rename_from"] && @$_POST["rename_to"])
+{
+  $oldfn = basename($_POST["rename_from"]);
+  $newfn = basename($_POST["rename_to"]);
+  sanitize_filename($newfn);
+  $error = @rename("slides/" . $oldfn, "slides/" . $newfn) == false;
+  if (!$error)
+    redirect();
+  $error = "Failed to rename slides/" . $oldfn . "to slides/" . $newfn;
+}
 else if (@$_GET["delete"])
 {
   $error = @unlink("slides/".basename($_GET["delete"])) == false;
@@ -88,9 +98,12 @@ else
     if ($v == ".") continue;
     if ($v == "..") continue;
     if ($v == "index.php") continue;
+    $hv = _html($v);
 
-    echo "<li>\n";
-    printf("<h3>%s</h3>\n",_html($v));
+    echo "<li><form method='post'>\n";
+    echo "<input type='hidden' name='rename_from' value='$hv'/>\n";
+    echo "<input type='text' name='rename_to' class='renameslide' size='30' value='$hv' title='change and press Enter to rename'/>\n";
+    echo "<input type='submit' class='renamesubmit' value='Rename'/>\n";
     printf("<div class='contents'>\n");
     switch(substr(strtolower($v),-4))
     {
@@ -114,7 +127,7 @@ else
     echo "</div>\n";
     printf("<a href='?edit=%s'>Edit</a> | ",rawurlencode($v));
     printf("<a href='?delete=%s' class='del'>Delete</a>",rawurlencode($v));
-    echo "</li>";
+    echo "</form></li>";
   }
   echo "</ul>\n";
 

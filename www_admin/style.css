@@ -317,6 +317,16 @@ input[type='submit'] {
   display: block;
   margin: 5px 0px;
 }
+input.renameslide {
+  border: solid 1px #666;
+  background: #222;
+  color: silver;
+  padding: 2px;
+  border-radius: 4px;
+}
+input[type='submit'].renamesubmit {
+  display: none;
+}
 
 #votekeys_print textarea {
   width: 200px;
