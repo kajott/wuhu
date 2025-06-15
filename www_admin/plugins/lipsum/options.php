@@ -69,6 +69,12 @@ if (@$_POST["truncate"])
     lipsum_delete_all_compos();
     printf("<div class='success'>Deleted all compos, entries, and votes</div>");
   }
+  else if ($_POST["truncate"]["votes"] == "on") 
+  {
+    SQLLib::Query("truncate votes_range;");
+    SQLLib::Query("truncate votes_preferential;");
+    printf("<div class='success'>Deleted all votes</div>");
+  }
   if ($_POST["truncate"]["users"] == "on")
   {
     SQLLib::Query("update compoentries set userid = 0");
@@ -154,21 +160,61 @@ if (@$_POST["fill"])
     }
     printf("<div class='success'>Generated 30 new entries</div>");
   }
+  if ($_POST["fill"]["votes"] == "on")
+  {
+    $userids = array_map(function($i){ return $i->id; }, SQLLib::SelectRows("select id from users") );
+    $entries = SQLLib::selectRows("select * from compoentries");
+    $userno = 0;
+    $totalusers = count($userids);
+    $totalvotes = 0;
+    $totalentries = 0;
+    $totalscore = 0;
+    foreach($entries as $entry)
+    {
+      $score = mt_rand(0, 5 * $totalusers);
+      $start_userno = $userno;
+      $entryused = 0;
+      while ($score > 0)
+      {
+        $vote = mt_rand(0, min($score, 5));
+        if ($vote > 0)
+        {
+          SQLLib::InsertRow("votes_range", array(
+            "compoid"      => $entry->compoid,
+            "userid"       => $userids[$userno],
+            "entryorderid" => $entry->playingorder,
+            "vote"         => $vote,
+            "votedate"     => date("Y-m-d H:i:s", time() + rand(0, 24*60*60))
+          ));
+          $score -= $vote;
+          $totalscore += $vote;
+          $totalvotes++;
+          $entryused = 1;
+        }
+        $userno = ($userno + 1) % $totalusers;
+        if ($userno == $start_userno) break;
+      }
+      $totalentries += $entryused;
+    }
+    printf("<div class='success'>Generated $totalvotes votes worth $totalscore points from $totalusers users for $totalentries entries</div>");
+  }
 }
 
 echo "<form method='post' onsubmit='return confirm(\"Are you sure you want to do this?\")'>";
 echo "<label>Select components to reset</label>";
 echo "<ul>";
-echo " <li><input type='checkbox' name='truncate[compos]' id='truncate-compos'/> <label for='truncate-compos'>Compos</label></li>";
+echo " <li><input type='checkbox' name='truncate[compos]' id='truncate-compos'/> <label for='truncate-compos'>Compos (+ Votes)</label></li>";
 echo " <li><input type='checkbox' name='truncate[compoentries]' id'=truncate-compoentries'/> <label for='truncate-compoentries'>Compo entries</label></li>";
-echo " <li><input type='checkbox' name='truncate[users] id='truncate-users'/> <label for='truncate-users'>Users</label></li>";
+echo " <li><input type='checkbox' name='truncate[users]' id='truncate-users'/> <label for='truncate-users'>Users</label></li>";
+echo " <li><input type='checkbox' name='truncate[votes]' id='truncate-votes'/> <label for='truncate-votes'>Votes</label></li>";
 echo "</ul>";
 echo "<label>Select components to fill with lorem ipsum</label>";
 echo "<ul>";
-echo " <li><input type='checkbox' name='use-unicode' id='use-unicode' checked='checked'/> <label for='use-unicode'>Use unicode characters for compo entry titles</label> </li>";
-echo " <li><input type='checkbox' name='fill[compos]' id='fill-compos'/> <label for='fill-compos'>Compos</label> </li>";
-echo " <li><input type='checkbox' name='fill[compoentries]' id='fill-compoentries'/> <label for='fill-compoentries'>Compo entries</label></li>";
-echo " <li><input type='checkbox' name='fill[users]' id='fill-users'/> <label for='fill-users'>Users (Name and password will be the same!)</label></li>";
+echo " <li><input type='checkbox' name='fill[compos]' id='fill-compos'/> <label for='fill-compos'>Compos (10)</label> </li>";
+echo " <li><input type='checkbox' name='fill[compoentries]' id='fill-compoentries'/> <label for='fill-compoentries'>Compo entries (30)</label></li>";
+echo " <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type='checkbox' name='use-unicode' id='use-unicode' checked='checked'/> <label for='use-unicode'>Use unicode characters for compo entry titles</label> </li>";
+echo " <li><input type='checkbox' name='fill[users]' id='fill-users'/> <label for='fill-users'>Users (5; Name and password will be the same!)</label></li>";
+echo " <li><input type='checkbox' name='fill[votes]' id='fill-votes'/> <label for='fill-votes'>Votes (for all entries from all users; range voting only!)</label></li>";
 echo "</ul>";
 echo "<input type='submit' value='Do'/>";
 echo "</form>";
