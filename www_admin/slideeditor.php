@@ -1,55 +1,84 @@
 <?php
 include_once("bootstrap.inc.php");
 
+$slidedir = get_setting("slidedir_edit");
+$slidedir = $slidedir ? (basename($slidedir) . "/") : "slides/";
+
 $error = false;
-if (is_uploaded_file(@$_FILES["newSlideFile"]["tmp_name"]?:""))
+if (@$_POST["slidedir_set"])
+{
+  $slidedir = basename($_POST["slidedir_set"]);
+  if ((substr($slidedir, 0, 6) != "slides") || !is_dir($slidedir))
+    $error = "Failed to change slide directory to $slidedir";
+  else
+  {
+    update_setting("slidedir_edit", $slidedir);
+    redirect();
+  }
+}
+else if (@$_POST["slidedir_new"])
+{
+  $slidedir = "slides_" . basename($_POST["slidedir_new"]);
+  $error = @file_exists($slidedir);
+  @umask(0002);
+  if (!$error)
+    $error = @mkdir($slidedir, 02775) == false;
+  if ($error)
+    $error = "Failed to create slide directory $slidedir";
+  else
+  {
+    update_setting("slidedir_edit", $slidedir);
+    redirect();
+  }
+}
+else if (is_uploaded_file(@$_FILES["newSlideFile"]["tmp_name"]?:""))
 {
   $fn = $_FILES["newSlideFile"]["name"];
   sanitize_filename($fn);
   if ($fn != "index.php")
   {
-    $error = @move_uploaded_file($_FILES["newSlideFile"]["tmp_name"],"slides/".$fn) == false;
+    $error = @move_uploaded_file($_FILES["newSlideFile"]["tmp_name"],$slidedir.$fn) == false;
   }
 
   if (!$error)
     redirect();
-  $error = "Failed to move uploaded file to slides/".$fn;
+  $error = "Failed to move uploaded file to ".$slidedir.$fn;
 }
 else if (@$_POST["newTextSlideContents"] && @$_POST["newTextSlideFilename"])
 {
   $fn = $_POST["newTextSlideFilename"];
   sanitize_filename($fn);
-  $error = @file_put_contents("slides/".$fn,$_POST["newTextSlideContents"]) == false;
+  $error = @file_put_contents($slidedir.$fn,$_POST["newTextSlideContents"]) == false;
 
   if (!$error)
     redirect();
-  $error = "Failed to write slides/".$fn;
+  $error = "Failed to write ".$slidedir.$fn;
 }
 else if (@$_POST["editSlideContents"] && @$_POST["editSlideFilename"])
 {
-  $error = @file_put_contents("slides/".$_POST["editSlideFilename"],$_POST["editSlideContents"]) == false;
+  $error = @file_put_contents($slidedir.$_POST["editSlideFilename"],$_POST["editSlideContents"]) == false;
 
   if (!$error)
     redirect();
-  $error = "Failed to write slides/".$_POST["editSlideFilename"];
+  $error = "Failed to write ".$slidedir.$_POST["editSlideFilename"];
 }
 else if (@$_POST["rename_from"] && @$_POST["rename_to"])
 {
   $oldfn = basename($_POST["rename_from"]);
   $newfn = basename($_POST["rename_to"]);
   sanitize_filename($newfn);
-  $error = @rename("slides/" . $oldfn, "slides/" . $newfn) == false;
+  $error = rename($slidedir.$oldfn, $slidedir.$newfn) == false;
   if (!$error)
     redirect();
-  $error = "Failed to rename slides/" . $oldfn . "to slides/" . $newfn;
+  $error = "Failed to rename " . $slidedir.$oldfn . " to " . $slidedir.$newfn;
 }
 else if (@$_GET["delete"])
 {
-  $error = @unlink("slides/".basename($_GET["delete"])) == false;
+  $error = @unlink($slidedir . basename($_GET["delete"])) == false;
 
   if (!$error)
     redirect("slideeditor.php");
-  $error = "Failed to unlink slides/".$_GET["delete"];
+  $error = "Failed to unlink ".$slidedir.$_GET["delete"];
 }
 
 include_once("header.inc.php");
@@ -67,18 +96,18 @@ else if (@$_GET["edit"])
     case ".jpg":
     case "jpeg":
     case ".gif":
-      printf("<img src='slides/%s'/>",$v);
+      printf("<img src='%s%s'/>",$slidedir,$v);
       break;
     case ".mp4":
     case ".ogv":
     case ".avi":
-      printf("<video controls='yes'><source src='slides/%s'/></video>",$v);
+      printf("<video controls='yes'><source src='%s%s'/></video>",$slidedir,$v);
       break;
     case ".txt":
     case ".htm":
     case "html":
       echo "<form method='post' enctype='multipart/form-data'>\n";
-      printf("<textarea name='editSlideContents'>%s</textarea>",_html(file_get_contents("slides/".$v)));
+      printf("<textarea name='editSlideContents'>%s</textarea>",_html(file_get_contents($slidedir.$v)));
       printf("<input type='hidden' name='editSlideFilename' value='%s' />",_html($v));
       echo "<input type='submit' value='Save' />";
       echo "</form>\n";
@@ -88,8 +117,19 @@ else if (@$_GET["edit"])
 }
 else
 {
-  $a = glob("slides/*");
+  $a = glob("slides*");
+  echo "<h2>Slide Set Management</h2>";
+  echo "<p><form method='post'>Current slide set to edit: <select name='slidedir_set'>\n";
+  foreach ($a as $d) {
+    if (!is_dir($d)) continue;
+    $title = ($d == "slides") ? "(default rotation)" : trim(substr($d, 6), "_");
+    echo "<option value='$d'" . (($d . "/" == $slidedir) ? " selected" : "") . ">$title</option>\n";
+  }
+  echo "</select><input type='submit' value='Switch Slide Set'></form></p>\n";
+  echo "<p><form method='post'>Create new slide set: <input type='text' name='slidedir_new'>\n";
+  echo "<input type='submit' value='Create Slide Set'></form></p>\n";
 
+  $a = glob($slidedir . "*");
   echo "<h2>Current slides</h2>\n";
   echo "<ul id='slides'>\n";
   foreach($a as $v)
@@ -111,17 +151,17 @@ else
       case ".jpg":
       case "jpeg":
       case ".gif":
-        printf("<img src='slides/%s'/>",$v);
+        printf("<img src='%s%s'/>",$slidedir,$v);
         break;
       case ".mp4":
       case ".ogv":
       case ".avi":
-        printf("<video><source src='slides/%s'/></video>",$v);
+        printf("<video><source src='%s%s'/></video>",$slidedir,$v);
         break;
       case ".txt":
       case ".htm":
       case "html":
-        printf("<pre>%s</pre>",_html(file_get_contents("slides/".$v)));
+        printf("<pre>%s</pre>",_html(file_get_contents($slidedir.$v)));
         break;
     }
     echo "</div>\n";

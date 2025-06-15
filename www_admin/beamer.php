@@ -3,6 +3,9 @@ include_once("bootstrap.inc.php");
 $DATAFILE = "beamer.data";
 $beamerData = @unserialize(file_get_contents($DATAFILE));
 
+$slidedir = get_setting("slidedir_show");
+$slidedir = $slidedir ? (basename($slidedir) . "/") : "slides/";
+
 if (@$_GET["format"])
 {
   switch($_GET["format"])
@@ -24,7 +27,15 @@ if (@$_GET["format"])
   exit();
 }
 
-if (@$_POST["mode"])
+if (@$_POST["slidedir"])
+{
+  $slidedir = basename($_POST["slidedir"]);
+  if ((substr($slidedir, 0, 6) == "slides") && is_dir($slidedir))
+  {
+    update_setting("slidedir_show", $slidedir);
+  }
+}
+else if (@$_POST["mode"])
 {
   $out = array();
   $out["success"] = true;
@@ -115,6 +126,17 @@ $s = SQLLib::selectRows("select * from compos order by start");
 
 printf("<p>URL to beamer data (for external / third party beam systems): <a href='beamer.php?format=json'>JSON</a> / <a href='beamer.php?format=jsonp'>JSONP</a></p>");
 printf("<p>Current mode: <b>%s</b></p>",_html(@$beamerData["result"]["mode"]));
+
+$a = glob("slides*");
+echo "<h3>Rotation Slide Set</h2>";
+echo "<p><form method='post'><select name='slidedir'>\n";
+foreach ($a as $d) {
+  if (!is_dir($d)) continue;
+  $title = ($d == "slides") ? "(default rotation)" : trim(substr($d, 6), "_");
+  echo "<option value='$d'" . (($d . "/" == $slidedir) ? " selected" : "") . ">$title</option>\n";
+}
+echo "</select><input type='submit' value='Switch Slide Set'></form></p>\n";
+
 ?>
 
 <div class='beamermode'>
