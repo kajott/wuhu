@@ -1,5 +1,10 @@
 <?php
-$files = glob("slides/*");
+include_once("bootstrap.inc.php");
+
+$slidedir = get_setting("slidedir_show");
+$slidedir = $slidedir ? (basename($slidedir) . "/") : "slides/";
+
+$files = glob($slidedir . "*");
 $output = array(
   "root" => "../",
   "slides" => array()

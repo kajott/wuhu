@@ -6,8 +6,8 @@ www_admin/database.inc.php
 www_admin/result.xml
 www_admin/beamer.data
 www_admin/noscreenshot-*.png
-www_admin/slides/*
-!www_admin/slides/index.php
+www_admin/slides*/*
+!www_admin/slides*/index.php
 www_admin/slideviewer/custom.css
 www_admin/slideviewer/custom.js
 www_party/database.inc.php
