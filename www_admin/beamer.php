@@ -34,6 +34,7 @@ if (@$_POST["slidedir"])
   {
     update_setting("slidedir_show", $slidedir);
   }
+  $slidedir = $slidedir . "/";
 }
 else if (@$_POST["mode"])
 {
