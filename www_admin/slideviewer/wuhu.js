@@ -174,6 +174,9 @@ var WuhuSlideSystem = Class.create({
           o.lastUpdate = parseInt(slide.lastChanged);
           this.slides.push( o );
         }).bind(this));
+        if (data.timeout !== undefined) {
+          Reveal.configure({ autoSlide: parseInt(data.timeout) * 1000 });
+        }
         Reveal.toggleAutoSlide(true);
         this.callbackDelay = null;
         this.reloadSlideRotation();
