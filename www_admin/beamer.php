@@ -138,7 +138,7 @@ foreach ($a as $d) {
   echo "<option value='$d'" . (($d . "/" == $slidedir) ? " selected" : "") . ">$title</option>\n";
 }
 echo "</select></p>\n";
-echo "Auto-Advance Interval: <input type='number' name='timeout' min='1' max='9999' value='" . get_setting("slide_timeout") . "'/> seconds";
+echo "Auto-Advance Interval: <input style='display:inline; width:3.75em' type='number' name='timeout' min='1' max='9999' value='" . get_setting("slide_timeout") . "'/> seconds";
 echo "</p>\n<p><input type='submit' value='Set Rotation Options'></p></form>\n";
 
 ?>
@@ -189,7 +189,7 @@ foreach($s as $t)
 ?>
 </select><br/>
   <input style="display:inline" type="checkbox" name="callbacks"/> trigger callbacks after
-  <input style="display:inline" type="text" size="2" name="cbdelay" value="20"/> seconds
+  <input style="display:inline; width:2.5em" type="number" max="99" name="cbdelay" value="20"/> seconds
 <br/>
   <input type="hidden" name="mode" value="compodisplay"/>
   <input type="submit" value="Switch to Compo Display mode."/>
