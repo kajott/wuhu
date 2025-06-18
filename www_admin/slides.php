@@ -4,10 +4,14 @@ include_once("bootstrap.inc.php");
 $slidedir = get_setting("slidedir_show");
 $slidedir = $slidedir ? (basename($slidedir) . "/") : "slides/";
 
+$timeout = @intval(get_setting("slide_timeout"));
+if (!$timeout) $timeout = 10;
+
 $files = glob($slidedir . "*");
 $output = array(
   "root" => "../",
-  "slides" => array()
+  "slides" => array(),
+  "timeout" => $timeout
 );
 foreach ($files as $v)
 {

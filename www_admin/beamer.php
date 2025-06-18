@@ -27,7 +27,7 @@ if (@$_GET["format"])
   exit();
 }
 
-if (@$_POST["slidedir"])
+if (@$_POST["slidedir"] && @$_POST["timeout"])
 {
   $slidedir = basename($_POST["slidedir"]);
   if ((substr($slidedir, 0, 6) == "slides") && is_dir($slidedir))
@@ -35,6 +35,7 @@ if (@$_POST["slidedir"])
     update_setting("slidedir_show", $slidedir);
   }
   $slidedir = $slidedir . "/";
+  update_setting("slide_timeout", $_POST["timeout"]);
 }
 else if (@$_POST["mode"])
 {
@@ -129,14 +130,16 @@ printf("<p>URL to beamer data (for external / third party beam systems): <a href
 printf("<p>Current mode: <b>%s</b></p>",_html(@$beamerData["result"]["mode"]));
 
 $a = glob("slides*");
-echo "<h3>Rotation Slide Set</h2>";
-echo "<p><form method='post'><select name='slidedir'>\n";
+echo "<h3>Rotation Slide Configuration</h2><form method='post'>";
+echo "<p>Slide Set: <select name='slidedir'>\n";
 foreach ($a as $d) {
   if (!is_dir($d)) continue;
   $title = ($d == "slides") ? "(default rotation)" : trim(substr($d, 6), "_");
   echo "<option value='$d'" . (($d . "/" == $slidedir) ? " selected" : "") . ">$title</option>\n";
 }
-echo "</select><input type='submit' value='Switch Slide Set'></form></p>\n";
+echo "</select></p>\n";
+echo "Auto-Advance Interval: <input type='number' name='timeout' min='1' max='9999' value='" . get_setting("slide_timeout") . "'/> seconds";
+echo "</p>\n<p><input type='submit' value='Set Rotation Options'></p></form>\n";
 
 ?>
 
