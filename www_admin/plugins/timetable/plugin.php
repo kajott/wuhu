@@ -17,6 +17,7 @@ function timetable_ucomp($a,$b)
 function get_timetable_content()
 {
   $rows = SQLLib::selectRows("select * from timetable order by `date`");
+  if (get_setting("timetable_autocompo") == "0") return $rows;
 
   $compos = SQLLib::selectRows("select * from compos order by start");
   foreach ($compos as $v)
@@ -179,6 +180,10 @@ function timetable_activation()
   if (get_setting("timetable_perpage") == null)
   {
     update_setting("timetable_perpage", 6);
+  }
+  if (get_setting("timetable_autocompo") == null)
+  {
+    update_setting("timetable_autocompo", 1);
   }
 }
 

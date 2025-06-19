@@ -58,6 +58,7 @@ if (@$_POST["export"])
 else if (@$_POST["timetable_perpage"])
 {
   update_setting("timetable_perpage",(int)$_POST["timetable_perpage"]);
+  update_setting("timetable_autocompo",@$_POST["timetable_autocompo"]?1:0);
 }
 else if ($_POST)
 {
@@ -130,8 +131,11 @@ else
 <form method="post" enctype="multipart/form-data">
   <h2>Options</h2>
 
-  <label for='twitter_querystring'>Number of entries per slide:</label>
-  <input type='number' id='timetable_perpage' name='timetable_perpage' value='<?=get_setting("timetable_perpage")?>'/>
+  <p><label for='timetable_perpage'>Number of entries per slide:</label>
+  <input type='number' id='timetable_perpage' name='timetable_perpage' value='<?=get_setting("timetable_perpage")?>'/></p>
+
+  <p><input type='checkbox' name='timetable_autocompo' <?=(get_setting("timetable_autocompo") == "0")?"":" checked"?>/>
+  automatically add compos to the timetable</p>
 
   <div>
     <input type="submit" name="save" value="Save" />
