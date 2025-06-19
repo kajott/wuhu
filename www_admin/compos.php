@@ -28,7 +28,7 @@ $checkboxen = array(
   "votingopen"=>"Compo open for voting",
   "uploadopen"=>"Compo open for uploading entries",
   "updateopen"=>"Compo open for updating entries",
-  "hasplatform"=>"Enable platform selection combo box",
+  "hasplatform"=>"Enable platform/option selection combo box",
 );
 
 if (@$_POST["submit"] == "Export!")
@@ -130,7 +130,7 @@ foreach($checkboxen as $k=>$v)
 }
 ?>
 <tr>
-  <td>Platform combobox presets<br/><small>(ignored if the combobox is not enabled &ndash; see the checkbox above)</small></td>
+  <td>Platform/options combobox presets<br/><small>(ignored if the combobox is not enabled &ndash; see the checkbox above)</small></td>
   <td><textarea id="platforms" name="platforms"><?=_html($compo->platforms)?>
 
 </textarea></td>

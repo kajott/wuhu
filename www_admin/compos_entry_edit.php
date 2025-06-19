@@ -163,7 +163,7 @@ foreach($s as $t) {
   <td><input name="author" type="text" value="<?=_html($entry->author)?>" class="inputfield"/></td>
 </tr>
 <tr>
-  <td>Platform:</td>
+  <td>Platform / Options:</td>
   <td><input name="platform" type="text" value="<?=_html($entry->platform)?>" class="inputfield" list="platforms"/></td>
   <datalist id="platforms">
   <?php
