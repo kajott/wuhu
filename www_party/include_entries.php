@@ -101,7 +101,7 @@ if (@$_GET["id"])
 </div>
 <?php if ($compo->hasplatform) { ?>
 <div class='formrow'>
-  <label for="platform">Platform:</label>
+  <label for="platform">Platform / Options:</label>
   <input id="platform" name="platform" type="text" value="<?=_html($entry->platform)?>" list="platforms"/>
   <datalist id="platforms">
   <?php

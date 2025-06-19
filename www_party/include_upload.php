@@ -67,7 +67,7 @@ foreach($s as $t)
   <input id='author' name="author" type="text" value="<?=_html(@$_POST["author"])?>"/>
 </div>
 <div class='formrow' id='row_platform'>
-  <label for='platform'>Platform:</label>
+  <label for='platform'>Platform / Options:</label>
   <input id='platform' name="platform" type="text" value="<?=_html(@$_POST["platform"])?>" list="platforms"/>
   <datalist id="platforms"></datalist>
 </div>
