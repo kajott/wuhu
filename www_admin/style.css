@@ -247,6 +247,8 @@ dd {
 .minuswiki th {
   color: #fff;
   padding: 1px;
+  padding-left: 10px;
+  padding-right: 10px;
   border-bottom: 1px solid #80a1a6;
 }
 
@@ -476,6 +478,8 @@ dl#breakdown dt span.filename {
   height: 60vh;
 }
 
+#compoentrylist tr.entry td:nth-child(1),
+#compoentrylist tr.entry td:nth-child(2),
 #compoentrylist tr.entry td:nth-child(7) {
   text-align: right;
 }
