@@ -337,7 +337,7 @@ var WuhuSlideSystem = Class.create({
               },this);
 
               // slide n+1: end of compo
-              var sec = this.insertSlide({"class":"compoDisplaySlide outro", "data-cbcompo":result.compoid});
+              var sec = this.insertSlide({"class":"compoDisplaySlide outro", "data-info-compo":result.compoid});
               var cont = sec.down("div.container");
               cont.insert( new Element("div",{"class":"eventName"}).update(compoNameFull) );
               cont.insert( new Element("div",{"class":"is"}).update("is") );
