@@ -12,7 +12,7 @@ function perform(&$msg)
   }
   $data = array();
   $meta = array("title","author","platform","comment","orgacomment");
-  foreach($meta as $m) $data[$m] = $_POST[$m];
+  foreach($meta as $m) $data[$m] = isset($_POST[$m]) ? $_POST[$m] : "";
   $data["id"] = $_POST["entryid"];
   $data["compoID"] = @$_POST["compo"];
   $data["userID"] = get_user_id();
