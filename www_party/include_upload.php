@@ -13,8 +13,8 @@ function perform(&$msg)
     return 0;
   }
   $data = array();
-  $meta = array("title","author","comment","orgacomment");
-  foreach($meta as $m) $data[$m] = $_POST[$m];
+  $meta = array("title","author","platform","comment","orgacomment");
+  foreach($meta as $m) $data[$m] = isset($_POST[$m]) ? $_POST[$m] : "";
   $data["compoID"] = $_POST["compo"];
   $data["userID"] = get_user_id();
   $data["localScreenshotFile"] = $_FILES['screenshot']['tmp_name'];
