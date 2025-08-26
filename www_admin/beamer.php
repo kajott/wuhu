@@ -128,6 +128,7 @@ $s = SQLLib::selectRows("select * from compos order by start");
 
 printf("<p>URL to beamer data (for external / third party beam systems): <a href='beamer.php?format=json'>JSON</a> / <a href='beamer.php?format=jsonp'>JSONP</a></p>");
 printf("<p>Current mode: <b>%s</b></p>",_html(@$beamerData["result"]["mode"]));
+$currentCompo = @$beamerData['result']['componame'];
 
 $a = glob("slides*");
 echo "<h3>Rotation Slide Configuration</h2><form method='post'>";
@@ -184,8 +185,11 @@ foreach($s as $t)
 <form action="beamer.php" method="post" enctype="multipart/form-data">
 <select name="compo">
 <?php
-foreach($s as $t)
-  printf("  <option value='%d'>%s</option>\n",$t->id,$t->name);
+$flag = "";
+foreach($s as $t) {
+  printf("  <option value='%d'%s>%s</option>\n",$t->id,$flag,$t->name);
+  $flag = ($t->name == $currentCompo) ? " selected" : "";
+}
 ?>
 </select><br/>
   <input style="display:inline" type="checkbox" name="callbacks"/> trigger callbacks after
@@ -201,8 +205,11 @@ foreach($s as $t)
 <form action="beamer.php" method="post" enctype="multipart/form-data">
 <select name="compo">
 <?php
-foreach($s as $t)
-  printf("  <option value='%d'>%s</option>\n",$t->id,$t->name);
+$flag = "";
+foreach($s as $t) {
+  printf("  <option value='%d'%s>%s</option>\n",$t->id,$flag,$t->name);
+  $flag = ($t->name == $currentCompo) ? " selected" : "";
+}
 ?>
 </select><br/>
   <input type="hidden" name="mode" value="prizegiving"/>
