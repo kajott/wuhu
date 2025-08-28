@@ -7,14 +7,19 @@
     $dirname = get_compoentry_dir_path($entry);
     
     $path = $dirname . $entry->filename;
-    if (($data = @file_get_contents($path)) === false) {
+    $fd = @fopen($path, 'rb');
+    if ($fd === false) {
       include_once("header.inc.php");
       printf("<div class='error'>Failed to read %s</div>",$path);
     } else {
-      header("Content-type: application/octet-stream");
-      header("Content-disposition: attachment; filename=\"".basename($entry->filename)."\"");
-      header("Content-length: ".filesize($path));
-      echo $data;
+      header("Content-Type: application/octet-stream");
+      header("Content-Disposition: attachment; filename=\"".basename($entry->filename)."\"");
+      header("Expires: 0");
+      header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+      $stat = @fstat($fd);
+      if ($stat) { header("Content-Length: ".$stat['size']); }
+      fpassthru($fd);
+      fclose($fd);
     }
     exit();
   }
