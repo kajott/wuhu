@@ -59,12 +59,15 @@ foreach ($entries as $e)
 {
   $c = $compos[$e->compoid];
   $fn = get_compoentry_file_path($e);
+  $mtime = @filemtime($fn);
+  if (!$mtime) { $mtime = strtotime($e->uploadtime); }
+  $order = sprintf("%02d", $e->playingorder);
   echo "<tr class='entry'>\n";
   echo "<td class='id'>#{$e->id}</td>\n";
-  echo "<td><a href='compos_entry_list.php?id={$e->compoid}' class='compo'>" . _html($c->name) . "</a><br><span class='order'>{$e->playingorder}</span>.</td>\n";
+  echo "<td><a href='compos_entry_list.php?id={$e->compoid}' class='compo' data-dirname='{$c->dirname}'>" . _html($c->name) . "</a><br><span class='order'>$order</span></td>\n";
   echo "<td><a href='compos_entry_edit.php?id={$e->id}' class='title'>" . _html($e->title) . "</a><br>by <span class='author'>" . _html($e->author) . "</span></td>\n";
   echo "<td><a href='compos_entry_edit.php?download={$e->id}' class='download' data-filename='" . _html($fn) . "'>" . _html($e->filename) . "</a><br></span>" . _html($e->platform) . "</span></td>\n";
-  echo "<td><span class='size'>" . number_format(filesize($fn)) . "</span>&nbsp;bytes<br><span class='date'>" . date("D H:i:s",strtotime($e->uploadtime)) . "</span></td>\n";
+  echo "<td><span class='size'>" . number_format(filesize($fn)) . "</span>&nbsp;bytes<br><span class='date' data-mtime='$mtime'>" . date("d.m. H:i:s", $mtime) . "</span></td>\n";
   echo "<td>";
   if ($have_status_field)
     echo "<span class='status entrystatus_{$e->status}'>{$e->status}</span><br>";
