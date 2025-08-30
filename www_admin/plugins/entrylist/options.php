@@ -37,7 +37,7 @@ foreach ($Orders as $k => $o)
   else
     echo "[<a class='setorder' href='?plugin=entrylist&order=$k'>{$o[0]}</a>]\n";
 }
-echo "</p>\n";
+echo "&bull; export as <a href=\"plugins/entrylist/json.php\">JSON</a></p>\n";
 
 // query the DB
 $compos = get_compos();
