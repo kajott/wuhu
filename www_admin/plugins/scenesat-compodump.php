@@ -22,7 +22,7 @@ function compodump_content( $data )
   $user = get_current_user_data();
   if ( !$user || !$user->compodump ) return;
 
-  $c = SQLLib::selectRows("select * from compos order by start,id");
+  $c = SQLLib::selectRows("select * from compos order by " . get_setting("compo_order"));
   foreach($c as $compo) {
     $content .= "<h3>"._html($compo->name)." <span class='scenesatCompoPlaylistDownloadLink'>";
     $content .= "<a href='".build_url("Compodump")."&amp;compoid=".$compo->id."'>m3u</a>";
