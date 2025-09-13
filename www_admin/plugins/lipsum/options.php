@@ -150,6 +150,7 @@ if (@$_POST["fill"])
         "title" => $title,
         "author" => lipsum_string(16),
         "comment" => lipsum_string(140),
+        "platform" => lipsum_string(20),
         "localFileName" => $tmp,
         "originalFileName" => basename($tmp),
         "orgacomment" => "",
