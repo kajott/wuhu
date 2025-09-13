@@ -1,9 +1,19 @@
 #!/bin/bash
 
-DEVICE="$1"
-OUTDIR="$2"
-if [ -z "$DEVICE" -o -z "$OUTDIR" ] ; then
+if [ -n "$1" -a -b "$1" ] ; then
+    DEVICE="$1"
+    OUTDIR="$2"
+else
+    DEVICE=""
+    OUTDIR="$1"
+fi
+
+if [ -z "$OUTDIR" -o "$OUTDIR" == "-h" ] ; then
     echo "Invalid parameters: $*"
+    echo "Usage: $0 [<DEVICE>] <OUTDIR>"
+    echo "If DEVICE is specified, it will be mounted and unmounted by the script"
+    echo "and OUTDIR is a directory to be created on the device's filesystem."
+    echo "Otherwise, OUTDIR is the full path to the target directory."
     exit 2
 fi
 
@@ -19,35 +29,37 @@ echo "========== CREATING WUHU BACKUP =========="
 echo
 echo "Start Date/Time:  $(date)"
 echo "Source Directory: $(pwd)"
-echo "Target Device:    $DEVICE"
+[ -n "$DEVICE" ] && echo "Target Device:    $DEVICE"
 echo "Target Directory: $OUTDIR"
 echo
 code=0
 
-echo "Mounting the device:"
-res="$( set -x ; udisksctl mount -b $DEVICE 2>&1 )"
-ret=$?
-echo $res
-if [ "$ret" == "0" ] ; then
-    MOUNT="$(echo $res | sed 's/.* //')"
-    echo "[OK - mount point: $MOUNT]"
-    echo
-elif echo "$res" | grep AlreadyMounted >/dev/null ; then
-    MOUNT="$(echo "$res" | tr '\n' '|' | cut -d'`' -f2 | cut -d"'" -f1)"
-    echo "[OK - already mounted: $MOUNT]"
-    echo
-else
-    echo "[FAILED - aborting backup]"
-    exit 1
+if [ -n "$DEVICE" ] ; then
+    echo "Mounting the device:"
+    res="$( set -x ; udisksctl mount -b $DEVICE 2>&1 )"
+    ret=$?
+    echo $res
+    if [ "$ret" == "0" ] ; then
+        MOUNT="$(echo $res | sed 's/.* //')"
+        echo "[OK - mount point: $MOUNT]"
+        echo
+    elif echo "$res" | grep AlreadyMounted >/dev/null ; then
+        MOUNT="$(echo "$res" | tr '\n' '|' | cut -d'`' -f2 | cut -d"'" -f1)"
+        echo "[OK - already mounted: $MOUNT]"
+        echo
+    else
+        echo "[FAILED - aborting backup]"
+        exit 1
+    fi
 fi
 
-if [ "$code" == "0" -a ! -d "$MOUNT" ] ; then
+if [ "$code" == "0" -a -n "$DEVICE" -a ! -d "$MOUNT" ] ; then
     echo "FATAL: mount point '$MOUNT' is not a valid directory, aborting."
     echo
     code=1
 fi
 
-if [ "$code" == "0" ] ; then
+if [ "$code" == "0" -a -n "$DEVICE" ] ; then
     OUTDIR="$MOUNT/$OUTDIR"
     echo "Full path to target directory: $OUTDIR"
     echo
@@ -114,11 +126,13 @@ if [ "$code" == "0" ] ; then
     echo
 fi
 
-echo "Unmounting the device:"
-if ( set -x ; udisksctl unmount -b $DEVICE ) ; then
-    echo "[OK]"
-else
-    echo "[FAILED]"
+if [ -n "$DEVICE" ] ; then
+    echo "Unmounting the device:"
+    if ( set -x ; udisksctl unmount -b $DEVICE ) ; then
+        echo "[OK]"
+    else
+        echo "[FAILED]"
+    fi
 fi
 
 echo
