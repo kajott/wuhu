@@ -29,6 +29,7 @@ else
   echo "<p>Select file to edit:</p><ul>\n";
   echo "<li><a href=\"pluginoptions.php?plugin=fileedit&file=../www_party/template.html\">visitor website template</a></li>\n";
   echo "<li><a href=\"pluginoptions.php?plugin=fileedit&file=slideviewer/custom.css\">slideviewer CSS</a></li>\n";
+  echo "<li><a href=\"pluginoptions.php?plugin=fileedit&file=results_header.txt\">results file header</a></li>\n";
   echo "</ul>\n";
 }
 
