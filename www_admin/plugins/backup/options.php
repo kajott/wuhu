@@ -76,7 +76,7 @@ if ($ok && !$pid) {
 
 if ($pid) { ?>
   <h3>CURRENTLY RUNNING</h3>
-  <textarea cols="80" rows="30" id="log"></textarea>
+  <textarea cols="80" rows="30" id="log" style="width:100%; min-width:50vw;"></textarea>
   <script>
     var text = "";
     var nbytes = 0;
@@ -100,7 +100,7 @@ if ($pid) { ?>
 
 if (!$pid && file_exists(LOGFILE)) {
     echo "<h3>Log from previous run</h3>\n";
-    echo "<textarea cols=\"80\" rows=\"24\">";
+    echo "<textarea cols=\"80\" rows=\"24\" style=\"width:100%; min-width:50vw;\">";
     echo htmlspecialchars(file_get_contents(LOGFILE));
     echo "</textarea>";
 }
