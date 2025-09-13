@@ -124,7 +124,7 @@ else if (@$_POST["mode"])
 include_once("header.inc.php");
 printf("<h2>Change beamer setting</h2>\n");
 
-$s = SQLLib::selectRows("select * from compos order by start");
+$s = SQLLib::selectRows("select * from compos order by " . get_setting("compo_order"));
 
 printf("<p>URL to beamer data (for external / third party beam systems): <a href='beamer.php?format=json'>JSON</a> / <a href='beamer.php?format=jsonp'>JSONP</a></p>");
 printf("<p>Current mode: <b>%s</b></p>",_html(@$beamerData["result"]["mode"]));

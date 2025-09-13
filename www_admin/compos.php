@@ -243,7 +243,7 @@ document.observe("dom:loaded",function(){
 }
 else
 {
-  $s = SQLLib::selectRows("select * from compos order by start");
+  $s = SQLLib::selectRows("select * from compos order by " . get_setting("compo_order"));
   ?>
   <table class='minuswiki' id='compolist'>
   <tr>

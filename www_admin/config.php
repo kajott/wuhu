@@ -181,6 +181,7 @@ function perform(&$msg) {
       sprintf_esc("insert into settings (setting,value) values ('voting_type'     ,'%s')",$_POST["voting_type"]),
       sprintf_esc("insert into settings (setting,value) values ('party_firstday'  ,'%s')",$_POST["party_firstday"]),
       sprintf_esc("insert into settings (setting,value) values ('party_name'      ,'%s')",$_POST["party_name"]),
+      sprintf_esc("insert into settings (setting,value) values ('compo_order'     ,'%s')","start,id"),
     );
     foreach ($queries as $q) {
       SQLLib::Query($q);

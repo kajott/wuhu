@@ -381,7 +381,7 @@ function generate_results(&$voter, $compoID = false, $skip_empty_compos = false)
   $output = array();
   if ($compoID === false)
   {
-    $compos = SQLLib::selectRows("select * from compos order by start,id");
+    $compos = SQLLib::selectRows("select * from compos order by " . get_setting("compo_order"));
   }
   else
   {

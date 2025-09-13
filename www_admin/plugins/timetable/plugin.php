@@ -19,7 +19,7 @@ function get_timetable_content()
   $rows = SQLLib::selectRows("select * from timetable order by `date`");
   if (get_setting("timetable_autocompo") == "0") return $rows;
 
-  $compos = SQLLib::selectRows("select * from compos order by start");
+  $compos = SQLLib::selectRows("select * from compos order by " . get_setting("compo_order"));
   foreach ($compos as $v)
   {
     $a = new stdClass();

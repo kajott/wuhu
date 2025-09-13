@@ -11,7 +11,7 @@
 </head>
 <body>
 <?php
-$compos = SQLLib::selectRows("select id,name from compos order by start");
+$compos = SQLLib::selectRows("select id,name from compos order by " . get_setting("compo_order"));
 foreach($compos as $compo)
 {
 //  printf("<h2>%s</h2>",$compo->name);
