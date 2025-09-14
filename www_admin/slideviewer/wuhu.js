@@ -440,7 +440,7 @@ var WuhuSlideSystem = Class.create({
     this.MODE_ROTATION = 1;
     this.MODE_EVENT = 2;
 
-    this.slideMode = this.MODE_EVENT;
+    this.slideMode = this.MODE_ROTATION;
 
     this.countdownTimeStamp = null;
 
