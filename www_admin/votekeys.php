@@ -1,13 +1,9 @@
 <?php
 include_once("bootstrap.inc.php");
 
-if (@$_POST["votekeys_format"])
+if (@$_POST["votekeys_format"] || @$_POST["votekeys_css"])
 {
   update_setting("votekeys_format",$_POST["votekeys_format"]);
-  redirect();
-}
-if (@$_POST["votekeys_css"])
-{
   update_setting("votekeys_css",$_POST["votekeys_css"]);
   redirect();
 }
