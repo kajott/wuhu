@@ -54,6 +54,8 @@ $cms->formdata = array(
   ),
 );
 
+run_hook("toc_formdata", array("formdata"=>&$cms->formdata));
+
 $cms->ProcessPost();
 
 include_once("header.inc.php");
