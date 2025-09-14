@@ -5,6 +5,8 @@ Description: Show your party schedule through the intranet
 */
 if (!defined("ADMIN_DIR")) exit();
 
+require_once(ADMIN_DIR . "/plugins/timetable/eventtypes.php");
+
 function timetable_ucomp($a,$b)
 {
   if ($a->date < $b->date) return -1;
@@ -99,24 +101,9 @@ function get_timetable_content_html( $forceBreak = -1, $skipElapsed = false )
         $text = sprintf("<a href='%s'>%s</a>",build_url($v->link),$v->event);
     }
 
-    switch (@$v->type) 
-    {
-      case "mainevent": {
-        $content .= sprintf("  <td class='timetableevent'><span class='timetable_eventtype_mainevent'>%s</span></td>\n",$text);
-      } break;
-      case "event": {
-        $content .= sprintf("  <td class='timetableevent'><span class='timetable_eventtype_event'>%s</span></td>\n",$text);
-      } break;
-      case "deadline": {
-        $content .= sprintf("  <td class='timetableevent'><span class='timetable_eventtype_deadline'>Deadline:</span> %s</td>\n",$text);
-      } break;
-      case "compo": {
-        $content .= sprintf("  <td class='timetableevent'><span class='timetable_eventtype_compo'>Compo:</span> %s</td>\n",$text);
-      } break;
-      case "seminar": {
-        $content .= sprintf("  <td class='timetableevent'><span class='timetable_eventtype_seminar'>Seminar:</span> %s</td>\n",$text);
-      } break;
-    }
+    $title = @EVENT_TYPES[$v->type];
+    $content .= sprintf("  <td class='timetableevent'><span class='timetable_eventtype timetable_eventtype_%s'>%s<span class='colon'>:</span></span> %s</td>\n", $v->type, _html($title), _html($text));
+
     $content .= sprintf("</tr>\n");
     $counter++;
   }
@@ -170,7 +157,7 @@ function timetable_activation()
     SQLLib::Query(" CREATE TABLE `timetable` (".
       "   `id` int(11) NOT NULL auto_increment,".
       "   `date` datetime NOT NULL,".
-      "   `type` enum('mainevent','event','deadline','compo','seminar') collate utf8_unicode_ci NOT NULL,".
+      "   `type` enum('" . implode("','", array_keys(EVENT_TYPES)) . "') collate utf8_unicode_ci NOT NULL,".
       "   `event` text collate utf8_unicode_ci NOT NULL,".
       "   `link` text collate utf8_unicode_ci NOT NULL,".
       "   PRIMARY KEY  (`id`)".
