@@ -1,6 +1,8 @@
 <?php
 if (!defined("PLUGINOPTIONS")) exit();
 
+require_once(ADMIN_DIR . "/plugins/timetable/eventtypes.php");
+
 $cms = new CMSGen();
 $cms->formdata = array(
   "table" => "timetable",
@@ -28,13 +30,7 @@ $cms->formdata = array(
       "caption"=>"type",
       "format"=>"select",
       "grid"=>true,
-      "fields"=>array(
-        'mainevent'=>"main event",
-        'event'=>"event",
-        'deadline'=>"deadline",
-        'compo'=>"compo",
-        'seminar'=>"seminar"
-      ),
+      "fields"=>EVENT_TYPES,
     ),
     "event"=>array(
       "sqlfield"=>"event",
