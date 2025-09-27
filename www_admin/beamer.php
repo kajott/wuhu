@@ -47,7 +47,7 @@ else if (@$_POST["mode"])
   switch ($_POST["mode"]) {
     case "announcement":
     {
-      if ($_POST["isHTML"] == "on")
+      if (@$_POST["isHTML"] == "on")
       {
         $out["result"]["announcementhtml"] = $_POST["announcement"];
       }
@@ -58,13 +58,13 @@ else if (@$_POST["mode"])
     } break;
     case "compocountdown":
     {
-      if ($_POST["compo"])
+      if (@$_POST["compo"])
       {
         $s = get_compo( $_POST["compo"] );
         $out["result"]["componame"] = $s->name;
         $out["result"]["compostart"] = $s->start;
       }
-      if ($_POST["eventname"])
+      if (@$_POST["eventname"])
       {
         $out["result"]["eventname"] = $_POST["eventname"];
         $out["result"]["compostart"] = $_POST["eventtime"];
@@ -76,7 +76,7 @@ else if (@$_POST["mode"])
       $compo = get_compo( $_POST["compo"] );
       $out["result"]["compoid"] = $compo->id;
       $out["result"]["componame"] = $compo->name;
-      $out["result"]["callbacks"] = $_POST["callbacks"] ? @intval($_POST["cbdelay"]) : 0;
+      $out["result"]["callbacks"] = @$_POST["callbacks"] ? @intval($_POST["cbdelay"]) : 0;
 
       $query = new SQLSelect();
       $query->AddTable("compoentries");
