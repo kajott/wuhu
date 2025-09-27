@@ -95,6 +95,7 @@ var WuhuSlideSystem = Class.create({
         case "gif":
         case "png":
         case "jpeg":
+        case "svg":
           {
             sec.addClassName( "image" );
             var img = new Element("img",{src:slide.url + "?" + slide.lastUpdate});

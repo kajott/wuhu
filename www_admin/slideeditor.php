@@ -96,6 +96,7 @@ else if (@$_GET["edit"])
     case ".jpg":
     case "jpeg":
     case ".gif":
+    case ".svg":
       printf("<img src='%s%s'/>",$slidedir,$v);
       break;
     case ".mp4":
@@ -151,6 +152,7 @@ else
       case ".jpg":
       case "jpeg":
       case ".gif":
+      case ".svg":
         printf("<img src='%s%s'/>",$slidedir,$v);
         break;
       case ".mp4":
