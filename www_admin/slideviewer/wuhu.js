@@ -349,8 +349,18 @@ var WuhuSlideSystem = Class.create({
             {
               Reveal.getConfig().loop = false;
 
-              var compoName = result.componame.escapeHTML();
-              var compoNameFull = "The " + compoName.escapeHTML() + " compo";
+              var compoName = "";
+              var compoNameFull = "";
+              if (result.componame)
+              {
+                compoName = result.componame.escapeHTML();
+                compoNameFull = "The " + compoName.escapeHTML() + " compo";
+              }
+              if (result.eventname)
+              {
+                compoName = result.eventname.escapeHTML();
+                compoNameFull = compoName.escapeHTML();
+              }
 
               // slide 1: introduction
               var sec = this.insertSlide({"class":"prizegivingSlide intro"});
