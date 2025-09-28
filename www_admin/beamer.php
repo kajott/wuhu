@@ -6,6 +6,16 @@ $beamerData = @unserialize(file_get_contents($DATAFILE));
 $slidedir = get_setting("slidedir_show");
 $slidedir = $slidedir ? (basename($slidedir) . "/") : "slides/";
 
+function get_compo_name_field($compo) {
+  // use the "bare" entry name if the global setting has been enabled
+  if (get_setting("slideviewer_barenames")) return "eventname";
+  // do the same if the compo name ends with "compo" or "demoshow"
+  $low = strtolower($compo->name);
+  if (str_ends_with($low, "compo") || str_ends_with($low, "demoshow")) return "eventname";
+  // otherwise, make the slideviewer add its usual "The XXX compo" text:
+  return "componame";
+}
+
 if (@$_GET["format"])
 {
   switch($_GET["format"])
@@ -61,7 +71,7 @@ else if (@$_POST["mode"])
       if (@$_POST["compo"])
       {
         $s = get_compo( $_POST["compo"] );
-        $out["result"]["componame"] = $s->name;
+        $out["result"][get_compo_name_field($s)] = $s->name;
         $out["result"]["compostart"] = $s->start;
       }
       if (@$_POST["eventname"])
@@ -75,7 +85,7 @@ else if (@$_POST["mode"])
     {
       $compo = get_compo( $_POST["compo"] );
       $out["result"]["compoid"] = $compo->id;
-      $out["result"]["componame"] = $compo->name;
+      $out["result"][get_compo_name_field($compo)] = $compo->name;
       $out["result"]["callbacks"] = @$_POST["callbacks"] ? @intval($_POST["cbdelay"]) : 0;
 
       $query = new SQLSelect();
@@ -113,7 +123,7 @@ else if (@$_POST["mode"])
       $compoResults = $results["compos"][0]["results"];
       run_hook("admin_beamer_prizegiving_rendervotes",array("results"=>&$compoResults,"compo"=>$compo));
 
-      $out["result"]["componame"] = $compo->name;
+      $out["result"][get_compo_name_field($compo)] = $compo->name;
       $out["result"]["results"] = array_reverse($compoResults);
     } break;
   }
@@ -129,6 +139,8 @@ $s = SQLLib::selectRows("select * from compos order by " . get_setting("compo_or
 printf("<p>URL to beamer data (for external / third party beam systems): <a href='beamer.php?format=json'>JSON</a> / <a href='beamer.php?format=jsonp'>JSONP</a></p>");
 printf("<p>Current mode: <b>%s</b></p>",_html(@$beamerData["result"]["mode"]));
 $currentCompo = @$beamerData['result']['componame'];
+$currentEvent = @$beamerData['result']['eventname'];
+if ($currentEvent && !$currentCompo) $currentCompo = $currentEvent;
 
 $a = glob("slides*");
 echo "<h3>Rotation Slide Configuration</h2><form method='post'>";
