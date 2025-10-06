@@ -423,6 +423,7 @@ function generate_results(&$voter, $compoID = false, $skip_empty_compos = false)
         "title" => $entry->title,
         "author" => $entry->author,
         "points" => (int)$points,
+        "filename" => $entry->filename,
       );
       
       $lastPoints = $points;
