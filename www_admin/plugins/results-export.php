@@ -36,6 +36,7 @@ function resultsexport_preheader()
           "Title",
           "Author",
           "Points",
+          "Filename",
         ));
 
         foreach($results["compos"] as $compo)
@@ -49,6 +50,7 @@ function resultsexport_preheader()
               $entry["title"],
               $entry["author"],
               $entry["points"],
+              $entry["filename"],
             ));
           }
         }        
