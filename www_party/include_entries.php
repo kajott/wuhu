@@ -167,6 +167,7 @@ if (@$_GET["id"])
   <input name="entryid" type='hidden' value="<?=(int)$_GET["id"]?>" />
   <input type="submit" value="Go!" />
 </div>
+<?php run_hook("editentry_endform"); ?>
 </div>
 </form>
 <?php
