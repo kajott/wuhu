@@ -125,8 +125,8 @@ if (@$_GET["id"])
 <?php if ($compo->screenshot) { ?>
 <div class='formrow'>
   <label>Screenshot: (JPG, GIF or PNG!)</label>
+  <input name="screenshot" type="file" accept="image/*" /><br>
   <img id='screenshot' src='screenshot.php?id=<?=(int)$_GET["id"]?>&amp;show=thumb' alt='thumb'/><br/>
-  <input name="screenshot" type="file" accept="image/*" />
 </div>
 <?php } ?>
 <div class='formrow'>
