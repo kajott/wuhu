@@ -94,6 +94,7 @@ foreach($s as $t)
 <div class='formrow'>
   <input type="submit" value="Go!" />
 </div>
+<?php run_hook("uploadentry_endform"); ?>
 </div>
 </form>
 <script>
