@@ -16,7 +16,10 @@ function perform(&$msg)
   $data["id"] = $_POST["entryid"];
   $data["compoID"] = @$_POST["compo"];
   $data["userID"] = get_user_id();
-  $data["localScreenshotFile"] = $_FILES['screenshot']['tmp_name'];
+  if (isset($_FILES['screenshot']))
+  {
+    $data["localScreenshotFile"] = $_FILES['screenshot']['tmp_name'];
+  }
   $data["localFileName"] = $_FILES['entryfile']['tmp_name'];
   $data["originalFileName"] = $_FILES['entryfile']['name'];
   if (handleUploadedRelease($data,$out))
