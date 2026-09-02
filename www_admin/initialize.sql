@@ -27,6 +27,7 @@ CREATE TABLE `compos` (
   `uploadopen` tinyint(4) default '1',
   `updateopen` tinyint(4) default '1',
   `hasplatform` tinyint(4) default '0',
+  `intimetable` tinyint(4) default '1',
   `platforms` text,
   `dirname` text NOT NULL,
   PRIMARY KEY  (`id`)

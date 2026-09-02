@@ -24,6 +24,8 @@ function get_timetable_content()
   $compos = SQLLib::selectRows("select * from compos order by " . get_setting("compo_order"));
   foreach ($compos as $v)
   {
+    if (!$v->intimetable)
+      continue;
     $a = new stdClass();
     $a->type = "compo";
     $a->event = $v->name;

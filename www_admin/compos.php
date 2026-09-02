@@ -23,6 +23,7 @@ if (@$_GET['shiftcompo'] && @$_GET["shiftid"])
 include_once("header.inc.php");
 
 $checkboxen = array(
+  "intimetable"=>"Show compo in the timetable",
   "showauthor"=>"Show author on the slide",
   "screenshot"=>"Enable screenshot upload and display",
   "votingopen"=>"Compo open for voting",
@@ -259,6 +260,7 @@ else
     <th>Voting</th>
     <th>Upload</th>
     <th>Editing</th>
+    <th>Timetable</th>
 <?php
   run_hook("admin_compolist_headerrow_end");
 ?>
@@ -281,6 +283,7 @@ else
     printf("  <td><a href='compos.php?id=%d&amp;change=votingopen'>%s</td>\n",$t->id,$t->votingopen?"open":"closed");
     printf("  <td><a href='compos.php?id=%d&amp;change=uploadopen'>%s</td>\n",$t->id,$t->uploadopen?"open":"closed");
     printf("  <td><a href='compos.php?id=%d&amp;change=updateopen'>%s</td>\n",$t->id,$t->updateopen?"open":"closed");
+    printf("  <td><a href='compos.php?id=%d&amp;change=intimetable'>%s</td>\n",$t->id,$t->intimetable?"shown":"hidden");
     run_hook("admin_compolist_row_end",array("compo"=>$t));
     printf("</tr>\n");
   }
