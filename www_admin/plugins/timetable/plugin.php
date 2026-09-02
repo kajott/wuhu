@@ -131,7 +131,7 @@ function timetable_export()
 
   $n = 1;
   for ($x=0; $x<10; $x++)
-    @unlink( sprintf(ADMIN_DIR . "/slides/timetable-%02d.htm",$x) );
+    @unlink( sprintf(ADMIN_DIR . "/slides/default/timetable-%02d.htm",$x) );
 
   if (!$a)
   {
@@ -139,7 +139,7 @@ function timetable_export()
   }
   foreach($a as $v)
   {
-    $fn = sprintf(ADMIN_DIR . "/slides/timetable-%02d.htm",$n++);
+    $fn = sprintf(ADMIN_DIR . "/slides/default/timetable-%02d.htm",$n++);
     file_put_contents($fn,$v);
     printf("<div class='success'>%s exported</div>\n",basename($fn));
   }

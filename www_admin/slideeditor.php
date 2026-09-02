@@ -2,32 +2,34 @@
 include_once("bootstrap.inc.php");
 
 $slidedir = get_setting("slidedir_edit");
-$slidedir = $slidedir ? (basename($slidedir) . "/") : "slides/";
+$slidedir = $slidedir ? ("slides/" . basename($slidedir) . "/") : "slides/default/";
 
 $error = false;
 if (@$_POST["slidedir_set"])
 {
-  $slidedir = basename($_POST["slidedir_set"]);
-  if ((substr($slidedir, 0, 6) != "slides") || !is_dir($slidedir))
-    $error = "Failed to change slide directory to $slidedir";
+  $base = basename($_POST["slidedir_set"]);
+  $slidedir = "slides/" . $base . "/";
+  if (!is_dir($slidedir))
+    $error = "Failed to change slide directory to $base";
   else
   {
-    update_setting("slidedir_edit", $slidedir);
+    update_setting("slidedir_edit", $base);
     redirect();
   }
 }
 else if (@$_POST["slidedir_new"])
 {
-  $slidedir = "slides_" . basename($_POST["slidedir_new"]);
+  $base = basename($_POST["slidedir_new"]);
+  $slidedir = "slides/" . $base . "/";
   $error = @file_exists($slidedir);
   @umask(0002);
   if (!$error)
     $error = @mkdir($slidedir, 02775) == false;
   if ($error)
-    $error = "Failed to create slide directory $slidedir";
+    $error = "Failed to create slide directory $base";
   else
   {
-    update_setting("slidedir_edit", $slidedir);
+    update_setting("slidedir_edit", $base);
     redirect();
   }
 }
@@ -118,13 +120,13 @@ else if (@$_GET["edit"])
 }
 else
 {
-  $a = glob("slides*");
+  $a = glob("slides/*");
   echo "<h2>Slide Set Management</h2>";
   echo "<p><form method='post'>Current slide set to edit: <select name='slidedir_set'>\n";
   foreach ($a as $d) {
     if (!is_dir($d)) continue;
-    $title = ($d == "slides") ? "(default rotation)" : trim(substr($d, 6), "_");
-    echo "<option value='$d'" . (($d . "/" == $slidedir) ? " selected" : "") . ">$title</option>\n";
+    $base = basename($d);
+    echo "<option value='$base'" . (($base == basename($slidedir)) ? " selected" : "") . ">$base</option>\n";
   }
   echo "</select><input type='submit' value='Switch Slide Set'></form></p>\n";
   echo "<p><form method='post'>Create new slide set: <input type='text' name='slidedir_new'>\n";

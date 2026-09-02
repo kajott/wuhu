@@ -2,7 +2,7 @@
 include_once("bootstrap.inc.php");
 
 $slidedir = get_setting("slidedir_show");
-$slidedir = $slidedir ? (basename($slidedir) . "/") : "slides/";
+$slidedir = $slidedir ? ("slides/" . basename($slidedir) . "/") : "slides/default/";
 
 $timeout = @intval(get_setting("slide_timeout"));
 if (!$timeout) $timeout = 10;
@@ -15,6 +15,8 @@ $output = array(
 );
 foreach ($files as $v)
 {
+  if (is_dir($v))
+    continue;
   if($v == ".") continue;
   if($v == "..") continue;
   if($v == "index.php") continue;

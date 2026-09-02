@@ -4,7 +4,7 @@ $DATAFILE = "beamer.data";
 $beamerData = @unserialize(file_get_contents($DATAFILE));
 
 $slidedir = get_setting("slidedir_show");
-$slidedir = $slidedir ? (basename($slidedir) . "/") : "slides/";
+$slidedir = $slidedir ? ("slides/" . basename($slidedir) . "/") : "slides/default/";
 
 function get_compo_name_field($compo) {
   // use the "bare" entry name if the global setting has been enabled
@@ -39,12 +39,12 @@ if (@$_GET["format"])
 
 if (@$_POST["slidedir"] && @$_POST["timeout"])
 {
-  $slidedir = basename($_POST["slidedir"]);
-  if ((substr($slidedir, 0, 6) == "slides") && is_dir($slidedir))
+  $base = basename($_POST["slidedir"]);
+  $slidedir = "slides/" . $base . "/";
+  if (is_dir($slidedir))
   {
-    update_setting("slidedir_show", $slidedir);
+    update_setting("slidedir_show", $base);
   }
-  $slidedir = $slidedir . "/";
   update_setting("slide_timeout", $_POST["timeout"]);
 }
 else if (@$_POST["mode"])
@@ -142,13 +142,13 @@ $currentCompo = @$beamerData['result']['componame'];
 $currentEvent = @$beamerData['result']['eventname'];
 if ($currentEvent && !$currentCompo) $currentCompo = $currentEvent;
 
-$a = glob("slides*");
+$a = glob("slides/*");
 echo "<h3>Rotation Slide Configuration</h2><form method='post'>";
 echo "<p>Slide Set: <select name='slidedir'>\n";
 foreach ($a as $d) {
   if (!is_dir($d)) continue;
-  $title = ($d == "slides") ? "(default rotation)" : trim(substr($d, 6), "_");
-  echo "<option value='$d'" . (($d . "/" == $slidedir) ? " selected" : "") . ">$title</option>\n";
+  $base = basename($d);
+  echo "<option value='$base'" . (($base == basename($slidedir)) ? " selected" : "") . ">$base</option>\n";
 }
 echo "</select></p>\n";
 echo "Auto-Advance Interval: <input style='display:inline; width:3.75em' type='number' name='timeout' min='1' max='9999' value='" . get_setting("slide_timeout") . "'/> seconds";
