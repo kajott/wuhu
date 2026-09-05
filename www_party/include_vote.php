@@ -76,6 +76,7 @@ if ($compos)
         printf("<div class='vote'>\n");
         $voter->RenderVoteGUI( $compo, $entry );
         printf("</div>\n");
+        run_hook("vote_entry_endform", array("compo"=>&$compo, "entry"=>&$entry));
         echo "</div>\n";
       }
       echo "</div>\n";
