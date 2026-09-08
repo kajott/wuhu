@@ -7,6 +7,23 @@ if (!defined("ADMIN_DIR")) exit();
 
 include_once("functions.inc.php");
 
+function sanitize($s)
+{
+    // decompose diacritical marks; this turns accented letters into
+    // combinations of the base letter followed by a combining diacritical mark
+    $s = normalizer_normalize($s, Normalizer::NFKD);
+    // remove everything that's non-ASCII
+    // (no idea how to do this efficiently, but it'll be fine, I guess)
+    $r = "";
+    for ($i = 0;  $i < strlen($s);  $i++)
+    {
+        if (ord($s[$i]) < 127) { $r .= $s[$i]; }
+    }
+    // finally, only allow alphanumeric characters and hyphens and replace
+    // everything else by underscores; also trim leading and trailing underscores
+    return trim(preg_replace("/[^a-zA-Z0-9-]+/", "_", $r), "_");
+}
+
 function validatearchive_rename( $data )
 {
   $rename = get_setting("validatearchive_rename")=="always";
@@ -25,7 +42,9 @@ function validatearchive_rename( $data )
   if ($rename)
   {
     $extension = pathinfo($data["filename"],PATHINFO_EXTENSION);
-    $data["filename"] = $data["data"]["title"] . " by " . $data["data"]["author"] . "." . $extension;
+    $title  = sanitize($data["data"]["title"]);
+    $author = sanitize($data["data"]["author"]);
+    $data["filename"] = "{$author}_-_{$title}.{$extension}";
   }
 }
 
