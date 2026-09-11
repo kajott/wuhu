@@ -3,13 +3,6 @@
 include_once("database.inc.php");
 include_once(ADMIN_DIR . "/bootstrap.inc.php");
 
-session_cache_limiter("");  // don't let PHP interfere with our caching headers
-
-start_wuhu_session();
-
-$s = SQLLib::selectRow(sprintf_esc("select * from compoentries where id = %d",$_GET["id"]));
-if(!$s) exit;
-
 $MIMETYPES = array(
   "gif"  => "image/gif",
   "png"  => "image/png",
@@ -44,6 +37,7 @@ function serve_file($fn)
   header("ETag: " . $etag);
   header("Last-Modified: " . gmdate('D, d M Y H:i:s', $mtime) . " GMT");
   header("Cache-Control: public, max-age=3600");
+  header_remove("Pragma");
   if ($cached) { exit; }
 
   // if we arrive here, the image hasn't been cached and needs to be sent in full
@@ -55,25 +49,40 @@ function serve_file($fn)
   exit;
 }
 
-$a = @$_GET["show"]=="thumb" ? get_compoentry_screenshot_thumb_path( $_GET["id"] ) : get_compoentry_screenshot_path( $_GET["id"] );
-if ($a && file_exists($a))
+$entry = intval(@$_GET["id"]);
+$thumb = (@$_GET["show"] == "thumb");
+if ($entry)
 {
-  serve_file($a);
-}
-else
-{
-  if (@$_GET["show"]=="thumb")
-  {
-    $path = ADMIN_DIR . "/noscreenshot-".(int)$settings["screenshot_sizex"]."x".(int)$settings["screenshot_sizey"].".png";
-    if (!file_exists($path))
-    {
-      thumbnail( ADMIN_DIR . "/noscreenshot.png",$path,$settings["screenshot_sizex"],$settings["screenshot_sizey"]);
-    }
-    serve_file($path);
+  // screenshot of specific entry requested
+  $fn = $thumb ? get_compoentry_screenshot_thumb_path($entry) : get_compoentry_screenshot_path($entry);
+  if ($fn && file_exists($fn)) {
+    serve_file($fn);
   }
   else
   {
-    serve_file(ADMIN_DIR . "/noscreenshot.png");
+    // screenshot doesn't exist -> redirect to "no screenshot" image
+    header("Location: " . $_SERVER['PHP_SELF'] . "?show=" . ($thumb ? "thumb" : "full"));
+    exit;
+  }
+}
+else
+{
+  // no or invalid entry ID -> serve "no screenshot" image
+  $src = ADMIN_DIR . "/noscreenshot.png";
+  if ($thumb)
+  {
+    $sx = intval($settings['screenshot_sizex']);
+    $sy = intval($settings['screenshot_sizey']);
+    $fn = ADMIN_DIR . "/noscreenshot-{$sx}x{$sy}.png";
+    if (!file_exists($fn))
+    {
+      thumbnail($src, $fn, $sx, $sy);
+    }
+    serve_file($fn);
+  }
+  else
+  {
+    serve_file($src);
   }
 }
 ?>
