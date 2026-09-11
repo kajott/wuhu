@@ -31,9 +31,9 @@ function warnomatic_put_script() {
         const lines = el.value.trim().split("\n").map((line) => Math.ceil((line.trim().length + 1) / charsPerLine)).reduce((a,b) => a+b, 0);
         if (lines >= warnLines) {
           var next = el.nextSibling;
-          if (!next || !next.classList || !next.classList.contains("truncation-warning")) {
+          if (!next || !next.classList || !next.classList.contains("truncation-warning-text")) {
             var warn = document.createElement("p");
-            warn.classList.add("truncation-warning");
+            warn.classList.add("truncation-warning-text");
             var w = document.createElement("strong");
             w.appendChild(document.createTextNode("Warning:"));
             warn.appendChild(w);
@@ -41,9 +41,9 @@ function warnomatic_put_script() {
             el.after(warn);
           }
         }
-        if      (lines >= maxLines)  { el.style.backgroundColor = "#fcc"; }
-        else if (lines >= warnLines) { el.style.backgroundColor = "#ffc"; }
-        else                         { el.style.backgroundColor = ""; }
+        if      (lines >= maxLines)  {    el.classList.add("truncation-warning-max"); el.classList.remove("truncation-warning-warn"); }
+        else if (lines >= warnLines) { el.classList.remove("truncation-warning-max");    el.classList.add("truncation-warning-warn"); }
+        else                         { el.classList.remove("truncation-warning-max"); el.classList.remove("truncation-warning-warn"); }
       });
     }
     WarnOMatic(document.getElementsByName("comment")[0], <?=$cfg['cpl']?>, <?=$cfg['warn']?>, <?=$cfg['max']?>);
