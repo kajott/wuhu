@@ -13,3 +13,5 @@ www_admin/slideviewer/custom.js
 www_party/database.inc.php
 www_party/prototype.js
 www_party/template.html
+www_admin/noscreenshot.png
+www_admin/plugins/timetable/eventtypes.php
