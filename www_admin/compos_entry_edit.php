@@ -139,7 +139,7 @@ if ($id) {
 } else {
 ?>
 <tr>
-  <td>Compo:</td>
+  <td><?=cs('label_compo', "Compo:")?></td>
   <td><select name="compo">
 <?php
 $dirname = NULL;
@@ -160,15 +160,15 @@ foreach($s as $t) {
 }
 ?>
 <tr>
-  <td>Product title:</td>
+  <td><?=cs('label_title', "Product title:")?></td>
   <td><input name="title" type="text" value="<?=_html($entry->title)?>" class="inputfield"/></td>
 </tr>
 <tr>
-  <td>Author:</td>
+  <td><?=cs('label_author', "Author:")?></td>
   <td><input name="author" type="text" value="<?=_html($entry->author)?>" class="inputfield"/></td>
 </tr>
 <tr>
-  <td>Platform / Options:</td>
+  <td><?=cs('label_platform', "Platform / Options:")?></td>
   <td><input name="platform" type="text" value="<?=_html($entry->platform)?>" class="inputfield" list="platforms"/></td>
   <datalist id="platforms">
   <?php
@@ -181,11 +181,11 @@ foreach($s as $t) {
   </datalist>
 </tr>
 <tr>
-  <td>Comment: (this will be shown on the compo slide)</td>
+  <td><?=cs('label_comment', "Comment: <small>(this will be shown on the compo slide)</small>")?></td>
   <td><textarea name="comment"><?=_html($entry->comment)?></textarea></td>
 </tr>
 <tr>
-  <td>Comment for the organizers: (this will NOT be shown anywhere)</td>
+  <td><?=cs('label_orgacomment', "Comment for the organizers: <small>(this will NOT be shown anywhere)</small>")?></td>
   <td><textarea name="orgacomment"><?=_html($entry->orgacomment)?></textarea></td>
 </tr>
 <?php if ($entry) { ?>
@@ -204,7 +204,7 @@ foreach($s as $t) {
 </tr>
 <?php } ?>
 <tr>
-  <td>Uploaded files:</td>
+  <td><?=cs('label_files', "Uploaded files:")?></td>
   <td>
     <ul class='filelist'>
     <?php
@@ -226,11 +226,11 @@ foreach($s as $t) {
   </td>
 </tr>
 <tr>
-  <td>Upload new file: (max. <?=ini_get("upload_max_filesize")?>)</td>
+  <td><?=str_replace('MAXSIZE', ini_get('upload_max_filesize'), cs('label_file', "Upload new file: <small>(max. MAXSIZE - if you want to upload a bigger file, just upload a dummy text file here and ask the organizers!)</small>"))?></td>
   <td><input name="entryfile" type="file" class="inputfield"/></td>
 </tr>
 <tr>
-  <td>Screenshot: (JPG, GIF or PNG!)</td>
+  <td><?=cs('label_screenshot', "Screenshot: <small>(optional - JPG, GIF or PNG!)</small>")?></td>
   <td>
 <?php if ($id) { ?>
   <div>

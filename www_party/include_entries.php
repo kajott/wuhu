@@ -95,16 +95,16 @@ if (@$_GET["id"])
 <form method="post" enctype="multipart/form-data">
 <div id="entryform">
 <div class='formrow'>
-  <label for="title">Product title:</label>
+  <label for='title'><?=cs('label_title', "Product title:")?></label>
   <input id="title" name="title" type="text" value="<?=_html($entry->title)?>" required='yes'/>
 </div>
 <div class='formrow'>
-  <label for="author">Author:</label>
+  <label for='author'><?=cs('label_author', "Author:")?></label>
   <input id="author" name="author" type="text" value="<?=_html($entry->author)?>"/>
 </div>
 <?php if ($compo->hasplatform) { ?>
 <div class='formrow'>
-  <label for="platform">Platform / Options:</label>
+  <label for='platform'><?=cs('label_platform', "Platform / Options:")?></label>
   <input id="platform" name="platform" type="text" value="<?=_html($entry->platform)?>" list="platforms"/>
   <datalist id="platforms">
   <?php
@@ -118,22 +118,22 @@ if (@$_GET["id"])
 </div>
 <?php } ?>
 <div class='formrow'>
-  <label for="comment">Comment: (this will be shown on the compo slide)</label>
+  <label for="comment"><?=cs('label_comment', "Comment: <small>(this will be shown on the compo slide)</small>")?></label>
   <textarea id="comment" name="comment"><?=_html($entry->comment)?></textarea>
 </div>
 <div class='formrow'>
-  <label id="orgacomment">Comment for the organizers: (this will NOT be shown anywhere)</label>
+  <label for='orgacomment'><?=cs('label_orgacomment', "Comment for the organizers: <small>(this will NOT be shown anywhere)</small>")?></label>
   <textarea name="orgacomment"><?=_html($entry->orgacomment)?></textarea>
 </div>
 <?php if ($compo->screenshot) { ?>
 <div class='formrow'>
-  <label>Screenshot: (JPG, GIF or PNG!)</label>
+  <label for='screenshot'><?=cs('label_screenshot', "Screenshot: <small>(optional - JPG, GIF or PNG!)</small>")?></label>
   <input name="screenshot" type="file" accept="image/*" /><br>
   <img id='screenshot' src='screenshot.php?id=<?=(int)$_GET["id"]?>&amp;show=thumb' alt='thumb'/><br/>
 </div>
 <?php } ?>
 <div class='formrow'>
-  <label>Uploaded files</label>
+  <label for="uploadedfiles"><?=cs('label_files', "Uploaded files:")?></label>
 <table id='uploadedfiles'>
 <?php
   $a = glob($filedir . "*");
@@ -157,14 +157,12 @@ if (@$_GET["id"])
 ?>
 </table>
 </div>
-<div class='formrow'>
-  <label>Upload new file:
-    <small>(max. <?=ini_get("upload_max_filesize")?> - if you want to upload
-  a bigger file, just upload a dummy text file here and ask the organizers!)</small></label>
-  <input name="entryfile" type="file" />
 <?php if (count($a)>1) { ?>
-  <small id='multifilewarning'>(Hint: having only <u>ONE</u> file decreases the chances of having the wrong version played!)</small>
+  <div id='multifilewarning'><?=cs('multifilewarning', "(Hint: having only <u>ONE</u> file decreases the chances of having the wrong version played!)")?></div>
 <?php } ?>
+<div class='formrow'>
+  <label for='entryfile'><?=str_replace('MAXSIZE', ini_get('upload_max_filesize'), cs('label_file', "Upload new file: <small>(max. MAXSIZE - if you want to upload a bigger file, just upload a dummy text file here and ask the organizers!)</small>"))?></label>
+  <input name="entryfile" type="file" />
 </div>
 <div class='formrow'>
   <input name="entryid" type='hidden' value="<?=(int)$_GET["id"]?>" />

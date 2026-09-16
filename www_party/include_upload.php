@@ -49,9 +49,9 @@ global $page;
 <form method="post" enctype="multipart/form-data" id='uploadEntryForm'>
 <div id="entryform">
 <div class='formrow'>
-  <label for='compo'>Compo:</label>
+  <label for='compo'><?=cs('label_compo', "Compo:")?></label>
   <select id='compo' name="compo" required='yes'>
-    <option value=''>-- Please select a compo:</option>
+    <option value=''><?=cs('composelect', "-- Please select a compo:")?></option>
 <?php
 foreach($s as $t)
   printf("  <option value='%d'%s>%s</option>\n",$t->id,$t->id==@$_POST["compo"] ? ' selected="selected"' : "",$t->name);
@@ -59,36 +59,32 @@ foreach($s as $t)
   </select>
 </div>
 <div class='formrow' id='row_title'>
-  <label for='title'>Product title:</label>
+  <label for='title'><?=cs('label_title', "Product title:")?></label>
   <input id='title' name="title" type="text" value="<?=_html(@$_POST["title"])?>" required='yes'/>
 </div>
 <div class='formrow' id='row_author'>
-  <label for='author'>Author:</label>
+  <label for='author'><?=cs('label_author', "Author:")?></label>
   <input id='author' name="author" type="text" value="<?=_html(@$_POST["author"])?>"/>
 </div>
 <div class='formrow' id='row_platform'>
-  <label for='platform'>Platform / Options:</label>
+  <label for='platform'><?=cs('label_platform', "Platform / Options:")?></label>
   <input id='platform' name="platform" type="text" value="<?=_html(@$_POST["platform"])?>" list="platforms"/>
   <datalist id="platforms"></datalist>
 </div>
 <div class='formrow' id='row_comment'>
-  <label for="comment">Comment: <small>(this will be shown on the compo slide)</small></label>
+  <label for="comment"><?=cs('label_comment', "Comment: <small>(this will be shown on the compo slide)</small>")?></label>
   <textarea name="comment"><?=_html(@$_POST["comment"])?></textarea>
 </div>
 <div class='formrow' id='row_orgacomment'>
-  <label for='orgacomment'>Comment for the organizers: <small>(this will NOT be shown anywhere)</small></label>
+  <label for='orgacomment'><?=cs('label_orgacomment', "Comment for the organizers: <small>(this will NOT be shown anywhere)</small>")?></label>
   <textarea name="orgacomment" id="orgacomment"><?=_html(@$_POST["orgacomment"])?></textarea>
 </div>
 <div class='formrow' id='row_entryfile'>
-  <label for='entryfile'>Uploaded file:
-  <small>
-  (max. <?=ini_get("upload_max_filesize")?> - if you want to upload
-  a bigger file, just upload a dummy text file here and ask the organizers!)
-  </small></label>
+  <label for='entryfile'><?=str_replace('MAXSIZE', ini_get('upload_max_filesize'), cs('label_file', "Upload new file: <small>(max. MAXSIZE - if you want to upload a bigger file, just upload a dummy text file here and ask the organizers!)</small>"))?></label>
   <input id='entryfile' name="entryfile" type="file" required='yes' />
 </div>
 <div class='formrow' id='row_screenshot'>
-  <label for='screenshot'>Screenshot: <small>(optional - JPG, GIF or PNG!)</small></label>
+  <label for='screenshot'><?=cs('label_screenshot', "Screenshot: <small>(optional - JPG, GIF or PNG!)</small>")?></label>
   <input id='screenshot' name="screenshot" type="file" accept="image/*" />
 </div>
 <div class='formrow'>

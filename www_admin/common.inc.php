@@ -52,6 +52,14 @@ function _js( $s )
 {
   return addcslashes( $s ?: "", "\x00..\x1f" );
 }
+
+function cs($key, $default)
+{
+  global $settings;
+  $s = @$settings["cs_" . $key];
+  return $s ? $s : $default;
+}
+
 /**
  * Multibyte capable wordwrap
  * http://php.net/manual/en/function.wordwrap.php#98724
