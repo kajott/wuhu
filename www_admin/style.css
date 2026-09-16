@@ -4,13 +4,24 @@
   box-sizing: border-box;
 } 
 body {
-  font-family: Tahoma, Arial;
+  color-scheme: dark;
   background: black;
 }
+
+body, input, select {
+  font-family: Roboto, Inter, 'Noto Sans', 'Segoe UI', Tahoma, sans-serif;
+}
+textarea, #votekeys .key {
+  font-family: 'DejaVu Sans Mono', 'Lucida Console', monospace;
+}
+
 #header {
+  position: fixed;
+  width: 100%;
   background: #138790;
   padding: 10px;
   border-bottom: 1px solid white;
+  z-index: 999;
 } 
 #header h1 small {
   opacity: 0.3;
@@ -23,14 +34,14 @@ body {
 }
 
 #menu {
-  position: absolute;
+  position: fixed;
   left: 10px;
   top: 70px;
   width: 100px;
   text-align: right;
-  line-height: 15px;
+  line-height: 20px;
 
-  font-size: 10px;
+  font-size: 13px;
   font-weight: bold; 
 
   text-transform: uppercase;
@@ -57,13 +68,12 @@ body {
 
 #content {
   position: absolute;
-  left: 120px;
+  left: 130px;
   top: 70px;
   padding: 0px;
 
-  font-size: 11px;
+  font-size: 13px;
   color: #939393;
-  line-height: 14px;
   text-align: left;
 
   padding-bottom: 50px;
@@ -72,12 +82,12 @@ body {
 
 #content h1 {
   color: #fff;
-  font-size: 16px;
+  font-size: 20px;
 }
 
 #content h2 {
   color: #fff;
-  font-size: 12px;
+  font-size: 16px;
   font-variant: small-caps;
   padding-top: 19px;
   padding-bottom: 5px;
@@ -85,7 +95,7 @@ body {
 
 #content h3 {
   color: #626262;
-  font-size: 11px;
+  font-size: 14px;
   padding-top: 20px;
   padding-bottom: 5px;
   letter-spacing: 2px;
@@ -93,7 +103,7 @@ body {
 
 #content h4 {
   color: #fff;
-  font-size: 11px;
+  font-size: 13px;
   padding-top: 15px;
 }
 
@@ -115,7 +125,7 @@ body {
   top: 10px;
   width: 100px;
   height: 18px;
-  font-size: 12px;
+  font-size: 13px;
 }
 
 #language span {
@@ -146,7 +156,7 @@ dt {
   color: #888;
   margin-top: 18px;
   margin-bottom: 5px;
-  font-size: 11px;
+  font-size: 13px;
 }
 dd {
   margin-left: 18px;
@@ -193,10 +203,8 @@ dd {
 }
 
 .small {
-  font-family: Verdana;
-  font-size: 7px;
+  font-size: 11px;
   color: #aaaaaa;
-  line-height: 7px;
 }
 
 #thanx {
@@ -428,10 +436,6 @@ input[type="checkbox"] + label {
   display: block;
 }
 
-#votekeys .key {
-  font-family: monospace;
-}
-
 pre {
   background: #222;
   padding: 5px;
@@ -465,7 +469,7 @@ dl#breakdown dt span.filename {
   width: 240px;
 }
 #slides li .contents pre {
-  font-size: 9px;
+  font-size: 11px;
   overflow: hidden;
 }
 #slideedit img,
