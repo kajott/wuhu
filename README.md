@@ -3,8 +3,10 @@ Lightweight party management system - http://wuhu.function.hu
 
 > [!NOTE]
 > This is **not** the official upstream version of Wuhu,
-> but a custom fork created by the organizers of the Deadline and Dream210 demoparties.
-> [See below](#CompoKit_Edition_Extensions) for a detailed list of changes.
+> but a custom fork created by the organizers of the
+> [Deadline](https://demoparty.berlin) and
+> [Dream210](https://dream210.party) demoparties.<br>
+> [See below](#compokit-edition-extensions) for a detailed list of changes.
 
 ## Requirements
 
