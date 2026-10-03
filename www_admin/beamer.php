@@ -199,11 +199,16 @@ foreach($s as $t)
 <?php
 $flag = "";
 foreach($s as $t) {
-  printf("  <option value='%d'%s>%s</option>\n",$t->id,$flag,$t->name);
-  $flag = ($t->name == $currentCompo) ? " selected" : "";
+  if (!intval($t->uploadopen) && !intval($t->updateopen))
+  {
+    printf("  <option value='%d'%s>%s</option>\n",$t->id,$flag,$t->name);
+    $flag = "";
+  }
+  if ($t->name == $currentCompo) { $flag = " selected"; }
 }
 ?>
-</select><br/>
+</select>
+<br/><small>(Only compos which are closed for uploading and editing are shown.)</small><br/>
   <input style="display:inline" type="checkbox" name="callbacks"/> trigger callbacks after
   <input style="display:inline; width:2.5em" type="number" max="99" name="cbdelay" value="20"/> seconds
 <br/>
