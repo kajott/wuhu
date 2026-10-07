@@ -35,9 +35,11 @@ textarea, #votekeys .key {
 
 #menu {
   position: fixed;
-  left: 10px;
-  top: 70px;
-  width: 100px;
+  left: 0;
+  top: 60px;
+  width: 120px;
+  height: calc(100vh - 60px);
+  padding: 10px;
   text-align: right;
   line-height: 20px;
 
@@ -46,6 +48,8 @@ textarea, #votekeys .key {
 
   text-transform: uppercase;
   color: #888;
+  background-color: black;
+  z-index: 9999;
 }
 
 #menu ul {
@@ -266,6 +270,12 @@ dd {
   padding-left: 10px;
   padding-right: 10px;
   border-bottom: 1px solid #305156;
+}
+
+.minuswiki tr.compo:hover,
+.minuswiki tr.entry:hover,
+.minuswiki tr.user:hover {
+  background-color: #222;
 }
 
 .success {
@@ -498,11 +508,16 @@ dl#breakdown dt span.filename {
 
 @media screen and (max-width : 640px) 
 {
+  #header {
+    position: static;
+    width: 100vw;
+  }
   #menu {
     position: static;
     width: 100%;
     padding: 5px;
     text-align: center;
+    height: auto;
   }
   #menu li {
     display: inline-block;

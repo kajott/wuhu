@@ -272,7 +272,7 @@ else
     $class = "enoughentries";
     if ($z->c == 0) $class = "noentries";
     else if ($z->c < 3) $class = "fewentries";
-    printf("<tr>\n");
+    printf("<tr class=\"compo\">\n");
     run_hook("admin_compolist_row_start",array("compo"=>$t));
     printf("  <td><b>%s</b></td>\n",$t->name);
     printf("  <td><a href='compos.php?id=%d'>edit</a></td>\n",$t->id);

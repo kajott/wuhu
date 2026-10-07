@@ -52,7 +52,7 @@ $entries = SQLLib::selectRows(sprintf_esc("select *,compoentries.id as id from c
 <?php
 $n = 1;
 foreach($entries as $t) {
-  printf("<tr>\n");
+  printf("<tr class=\"user\">\n");
   printf("  <td>%d.</td>\n",$t->playingorder);
   printf("  <td>#%d</td>\n",$t->id);
   printf("  <td><a href='compos_entry_edit.php?id=%d'>%s</a></td>\n",$t->id,$t->title);
