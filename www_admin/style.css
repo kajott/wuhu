@@ -498,6 +498,19 @@ dl#breakdown dt span.filename {
   text-align: right;
 }
 
+#content a.compotoggle {
+  display: inline-block;
+  padding: 0 .5em 0 .5em;
+  border-radius: 5px;
+  color: black;
+  font-weight: normal;
+}
+.compotoggle_off           { background-color: #555; }
+.compotoggle_on            { background-color: #aaa; }
+.compotoggle_uploadopen_on { background-color: #f80; }
+.compotoggle_updateopen_on { background-color: #fc0; }
+.compotoggle_votingopen_on { background-color: #0f0; }
+
 @media screen and (max-width : 1024px) 
 {
   .minuswiki td {

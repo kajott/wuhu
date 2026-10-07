@@ -1,10 +1,22 @@
 <?php
 include_once("bootstrap.inc.php");
 
+$checkboxen = array(
+  "intimetable" => array('short'=>"TIMETABLE",  'long'=>"timetable entry", 'if1'=>"shown",   'if0'=>"hidden",   'adv'=>1, 'desc'=>"Show compo in the timetable"),
+  "showauthor"  => array('short'=>"AUTHOR",     'long'=>"author",          'if1'=>"shown",   'if0'=>"hidden",   'adv'=>1, 'desc'=>"Show author on the slide"),
+  "screenshot"  => array('short'=>"SCREENSHOT", 'long'=>"screenshot",      'if1'=>"enabled", 'if0'=>"disabled", 'adv'=>1, 'desc'=>"Enable screenshot upload and display"),
+  "hasplatform" => array('short'=>"PLATFORM",   'long'=>"platform field",  'if1'=>"shown",   'if0'=>"hidden",   'adv'=>1, 'desc'=>"Compo open for voting"),
+  "uploadopen"  => array('short'=>"UPLOAD",     'long'=>"upload",          'if1'=>"open",    'if0'=>"closed",   'adv'=>0, 'desc'=>"Compo open for uploading entries"),
+  "updateopen"  => array('short'=>"EDIT",       'long'=>"editing",         'if1'=>"open",    'if0'=>"closed",   'adv'=>0, 'desc'=>"Compo open for updating entries"),
+  "votingopen"  => array('short'=>"VOTE",       'long'=>"voting",          'if1'=>"open",    'if0'=>"closed",   'adv'=>0, 'desc'=>"Enable platform/option selection combo box"),
+);
+
+$adv = intval(@$_GET['adv']);
+
 if (@$_GET['change']) 
 {
   SQLLib::Query(sprintf_esc("update compos set %s=1-%s where id=%d",$_GET['change'],$_GET['change'],$_GET['id']));
-  redirect("compos.php");
+  redirect($adv ? "compos.php?adv=$adv" : "compos.php");
 }
 if (@$_GET['shiftallcompos']) 
 {
@@ -21,16 +33,6 @@ if (@$_GET['shiftcompo'] && @$_GET["shiftid"])
   redirect("compos.php");
 }
 include_once("header.inc.php");
-
-$checkboxen = array(
-  "intimetable"=>"Show compo in the timetable",
-  "showauthor"=>"Show author on the slide",
-  "screenshot"=>"Enable screenshot upload and display",
-  "votingopen"=>"Compo open for voting",
-  "uploadopen"=>"Compo open for uploading entries",
-  "updateopen"=>"Compo open for updating entries",
-  "hasplatform"=>"Enable platform/option selection combo box",
-);
 
 if (@$_POST["submit"] == "Export!")
 {
@@ -124,7 +126,7 @@ foreach($checkboxen as $k=>$v)
 {
 ?>
 <tr>
-  <td><?=$v?></td>
+  <td><?=$v['desc']?></td>
   <td><input id="<?=$k?>" name="<?=$k?>" type="checkbox"<?=$compo->$k?' checked="checked"':""?>/></td>
 </tr>
 <?php
@@ -256,12 +258,10 @@ else
     <th>Organize</th>
     <th>Dir</th>
     <th>Start <a href="compos.php?shiftallcompos=-15" title="Shift all compos 15 minutes earlier">-</a>/<a href="compos.php?shiftallcompos=15" title="Shift all compos 15 minutes later">+</a></th>
-    <th>Author</th>
-    <th>Voting</th>
-    <th>Upload</th>
-    <th>Editing</th>
-    <th>Timetable</th>
 <?php
+  foreach($checkboxen as $k=>$v)
+    if ($adv >= $v['adv'])
+      echo "    <th>" . ucfirst($v['long']) . "</th>\n";
   run_hook("admin_compolist_headerrow_end");
 ?>
   </tr>
@@ -279,17 +279,21 @@ else
     printf("  <td><a href='compos_entry_list.php?id=%d'>organize (<span class='%s'>%d</span>)</a> / <a href='compos_entry_edit.php?compo=%d'>add</a></td>\n",$t->id,$class,$z->c,$t->id);
     printf("  <td>%s</td>\n",$t->dirname);
     printf("  <td><a href='compos.php?shiftid=%d&amp;shiftcompo=-15' title='Shift 15 minutes earlier'>-</a> %s <a href='compos.php?shiftid=%d&amp;shiftcompo=15' title='Shift 15 minutes later'>+</a></td>\n",$t->id,$t->start,$t->id);
-    printf("  <td><a href='compos.php?id=%d&amp;change=showauthor'>%s</td>\n",$t->id,$t->showauthor?"shown":"hidden");
-    printf("  <td><a href='compos.php?id=%d&amp;change=votingopen'>%s</td>\n",$t->id,$t->votingopen?"open":"closed");
-    printf("  <td><a href='compos.php?id=%d&amp;change=uploadopen'>%s</td>\n",$t->id,$t->uploadopen?"open":"closed");
-    printf("  <td><a href='compos.php?id=%d&amp;change=updateopen'>%s</td>\n",$t->id,$t->updateopen?"open":"closed");
-    printf("  <td><a href='compos.php?id=%d&amp;change=intimetable'>%s</td>\n",$t->id,$t->intimetable?"shown":"hidden");
+    foreach($checkboxen as $k=>$v) {
+      if ($adv < $v['adv']) continue;
+      $state = intval($t->$k) ? $v['if1'] : $v['if0'];
+      $class = intval($t->$k) ? "on" : "off";
+      echo "  <td><a class='compotoggle compotoggle_$k compotoggle_$class compotoggle_{$k}_$class' href='compos.php?id={$t->id}&amp;change=$k&amp;adv=$adv' title='{$t->name}: {$v['long']} is $state'>{$v['short']}</a></td>\n";
+    }
     run_hook("admin_compolist_row_end",array("compo"=>$t));
     printf("</tr>\n");
   }
   printf("<tr><td colspan='10'><a href='compos.php?new=add'>add new compos</a></td></tr>\n");
   echo "</table>\n";
 }
+$inv = 1-$adv;
+$t = $inv ? "show" : "hide";
+echo "<p><a href='compos.php?adv=$inv'>$t advanced options</a></p>\n";
 ?>
 <form method="post" enctype="multipart/form-data">
   <h2>Export all compos to export directory</h2>
