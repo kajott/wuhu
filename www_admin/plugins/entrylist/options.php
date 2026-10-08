@@ -80,4 +80,5 @@ foreach ($entries as $e)
 
 // done
 echo "</table>\n";
+run_hook("admin_entrylist_end");
 ?>

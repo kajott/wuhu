@@ -274,7 +274,7 @@ $dirname = NULL;
 $s = SQLLib::selectRows("select * from compos order by " . get_setting("compo_order"));
 foreach($s as $t) {
   if ($t->id == $entry->compoid) continue;
-  printf("  <option value='%d'%s>%s</option>\n",$t->id,max($entry->compoid,$_GET["compo"])==$t->id?" selected='selected'":"",$t->name);
+  printf("  <option value='%d'%s>%s</option>\n",$t->id,max($entry->compoid,intval(@$_GET["compo"]))==$t->id?" selected='selected'":"",$t->name);
 }
 ?>
   </select>
