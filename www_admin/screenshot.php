@@ -36,7 +36,8 @@ function serve_file($fn)
   if ($cached) { http_response_code(304); }
   header("ETag: " . $etag);
   header("Last-Modified: " . gmdate('D, d M Y H:i:s', $mtime) . " GMT");
-  header("Cache-Control: public, max-age=3600");
+  if (defined('SCREENSHOT_SAME_USER')) { header("Cache-Control: max-age=0, must-revalidate"); }
+  else                                 { header("Cache-Control: public, max-age=3600"); }
   header_remove("Pragma");
   if ($cached) { exit; }
 

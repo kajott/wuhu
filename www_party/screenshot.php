@@ -12,6 +12,7 @@ if ($eid)
   if(!$entry) { http_response_code(404); exit; }
   $compo = SQLLib::selectRow(sprintf_esc("select * from compos where id = %d",$entry->compoid));
   if (get_user_id() != $entry->userid && $compo->votingopen==0) { http_response_code(401); exit; }
+  if (get_user_id() == $entry->userid) define('SCREENSHOT_SAME_USER', 1);
 }
 
 include_once(ADMIN_DIR . "/screenshot.php");
