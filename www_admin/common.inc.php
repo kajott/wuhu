@@ -300,7 +300,7 @@ function handleUploadedRelease( $dataArray, &$output )
     $sqldata["playingorder"] = $order;
     $sqldata["userid"] = (int)$dataArray["userID"];
     $sqldata["compoid"] = $compo->id;
-    $sqldata["uploadip"] = $_SERVER["REMOTE_ADDR"];
+    $sqldata["uploadip"] = @$_SERVER["HTTP_X_FORWARDED_FOR"] ?? $_SERVER["REMOTE_ADDR"];
     $sqldata["uploadtime"] = date("Y-m-d H:i:s");
     $id = SQLLib::InsertRow("compoentries",$sqldata);
   }
