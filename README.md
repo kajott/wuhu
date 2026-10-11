@@ -77,8 +77,9 @@ present in upstream Wuhu:
 * PartyMeister-style callbacks from the slide viewer that can automatically
   unlock live voting of entries during a compo, and even normal voting
   after the end of a compo (all optional)
-* on the visitor site, screenshots are cached
+* screenshots are cached
 * visitors can download releases during voting
+* validator plugin catches more common filename patterns
 * there can be multiple rotation slide playlists
 * the rotation slide timeout can be adjusted
 * the slide viewer starts in rotation slide mode, not in compo mode
@@ -95,7 +96,11 @@ present in upstream Wuhu:
 * new plugin that allows editing of various template and CSS files directly
   from the admin UI; no SFTP access needed
 * the form element labels in the entry upload and edit fields can be customized
-* minor admin UI refresh with proper dark theming
+* admin UI improvements:
+  * CSS refresh with proper dark theming
+  * improved compo list button display (visual instead of just text)
+  * new plugin that shows mouse-over hover screenshot thumbnails in entry lists
+  * don't allow starting compos that are still open for upload or editing
 
 ## Credits
 Wuhu was created and is maintained by Gargaj / Conspiracy.

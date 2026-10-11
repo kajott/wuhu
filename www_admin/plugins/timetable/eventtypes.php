@@ -1,7 +1,7 @@
 <?php
 
 define('EVENT_TYPES', array(
-  "mainevent" => "Main Event",
+  "mainevent" => "Outdoor",
   "event"     => "Event",
   "deadline"  => "Deadline",
   "compo"     => "Compo",
