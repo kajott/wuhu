@@ -78,6 +78,7 @@ present in upstream Wuhu:
   unlock live voting of entries during a compo, and even normal voting
   after the end of a compo (all optional)
 * screenshots are cached
+* the single-page voting form shows which compos have already been voted for
 * visitors can download releases during voting
 * validator plugin catches more common filename patterns
 * there can be multiple rotation slide playlists
