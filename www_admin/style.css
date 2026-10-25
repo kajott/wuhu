@@ -567,3 +567,51 @@ dl#breakdown dt span.filename {
     max-width: calc(100vw - 125px);
   }
 }
+
+@media print {
+  * {
+    color: black !important;
+    font-size: 10pt;
+  }
+  body {
+    background: none;
+  }
+  form {
+    display: none;
+  }
+  .minuswiki tr.compo:hover,
+  .minuswiki tr.entry:hover,
+  .minuswiki tr.user:hover {
+    background: none;
+  }
+  #menu, #footer {
+    display: none;
+  }
+  #content, #header {
+    position: static;
+    left: 0;
+    top: 0;
+  }
+  #header {
+    background: #eee;
+    border: solid .75pt black;
+    padding: .25em;
+    margin: 0 0 .2em 0;
+  }
+  #header h1 {
+    font-size: 12pt;
+  }
+  #header h1 small {
+    font-size: 10pt;
+  }
+  #compolist tr td:nth-child(2), #compolist tr th:nth-child(3),
+  #compolist tr td:nth-child(2), #compolist tr th:nth-child(3) {
+    display: none;
+  }
+  .compotoggle_off  { background-color: #eee; color: #aaa !important; }
+  .compotoggle_on   { background-color: #444; color: #fff !important; }
+  .results td, .results th {
+    border: .25pt solid black;
+    padding: .25em;
+  }
+}

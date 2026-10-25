@@ -97,7 +97,7 @@ present in upstream Wuhu:
   from the admin UI; no SFTP access needed
 * the form element labels in the entry upload and edit fields can be customized
 * admin UI improvements:
-  * CSS refresh with proper dark theming
+  * CSS refresh with proper dark theming, and basic printing support
   * improved compo list button display (visual instead of just text)
   * new plugin that shows mouse-over hover screenshot thumbnails in entry lists
   * don't allow starting compos that are still open for upload or editing

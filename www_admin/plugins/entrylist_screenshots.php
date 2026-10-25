@@ -15,6 +15,12 @@ function entrylist_screenshot_script() {
       height: <?=$settings['screenshot_sizey']?>px;
       margin: 16px 0 0 8px;
     }
+    @media print {
+      #entrylistscreenshot {
+        display: none !important;
+        width: 0;  height: 0;
+      }
+    }
   </style><img id="entrylistscreenshot"><script>
   (function() {
     var table = document.getElementById("compoentrylist");
