@@ -83,6 +83,7 @@ if ($compos)
     }
   }
   echo "<div id='votesubmit'><input type='submit' value='Submit votes!'/></div>\n";
+  run_hook("vote_endform");
   echo "</form>\n";
 }
 
